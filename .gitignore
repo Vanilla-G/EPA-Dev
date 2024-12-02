@@ -1,0 +1,12 @@
+# =====================================
+# Application Files
+# =====================================
+.env            # Environment variables
+# =====================================
+# General OS Files
+# =====================================
+.DS_Store       # macOS Finder metadata
+# =====================================
+# Logs and Debugging Files
+*.log           # Application logs
+# =====================================
