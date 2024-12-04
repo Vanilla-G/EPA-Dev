@@ -103,41 +103,20 @@ Objectives:
 </p>
 
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 ### Built With
 
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+<div align="center">
 
-  
-* [![Ubuntu][Ubuntu.icon]][Ubuntu-url]
-
-  
-* ![Static Badge](https://img.shields.io/badge/Ubuntu%20-%20red?style=for-the-badge&logo=ubuntu&logoColor=red)
-* ![Static Badge](https://img.shields.io/badge/Nginx%20-%20Green?style=for-the-badge&logo=nginx&logoColor=red)
-* ![Static Badge](https://img.shields.io/badge/MySQL%20-%20Green?style=for-the-badge&logo=mysql)
-* ![Static Badge](https://img.shields.io/badge/MariaDB%20-%20blue?style=for-the-badge&logo=mariadb&logoColor=black)
-* ![Static Badge](https://img.shields.io/badge/PHP%20-%20%23777BB4?style=for-the-badge&logo=php&logoColor=black)
-* ![Static Badge](https://img.shields.io/badge/Wordpress%20-%20%2321759B?style=for-the-badge&logo=wordpress)
-* ![Static Badge](https://img.shields.io/badge/Terraform%20-%20%23844FBA?style=for-the-badge&logo=terraform&logoColor=grey)
-* ![Static Badge](https://img.shields.io/badge/Github%20Actions%20-%20black?style=for-the-badge&logo=githubactions&logoColor=%232088FF)
-* ![Static Badge](https://img.shields.io/badge/Grafana%20-%20%23F46800?style=for-the-badge&logo=grafana&logoColor=black)
-* ![Static Badge](https://img.shields.io/badge/Prometheus%20-%20black?style=for-the-badge&logo=prometheus&logoColor=%23E6522C)
-* ![Static Badge](https://img.shields.io/badge/Kuma%20-%20green?style=for-the-badge&logo=prometheus&logoColor=%235CDD8B)
-* ![Static Badge](https://img.shields.io/badge/AWS%20-%20%23232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=gold)
-
-
+| ![AWS](https://img.shields.io/badge/AWS%20-%20%23232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=gold) | ![Grafana](https://img.shields.io/badge/Grafana%20-%20%23F46800?style=for-the-badge&logo=grafana&logoColor=black) | ![GitHub Actions](https://img.shields.io/badge/Github%20Actions%20-%20black?style=for-the-badge&logo=githubactions&logoColor=%232088FF) |
+|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| ![Kuma](https://img.shields.io/badge/Kuma%20-%20green?style=for-the-badge&logo=prometheus&logoColor=%235CDD8B) | ![MariaDB](https://img.shields.io/badge/MariaDB%20-%20blue?style=for-the-badge&logo=mariadb&logoColor=black) | ![MySQL](https://img.shields.io/badge/MySQL%20-%20Green?style=for-the-badge&logo=mysql) |
+| ![Nginx](https://img.shields.io/badge/Nginx%20-%20Green?style=for-the-badge&logo=nginx&logoColor=red) | ![PHP](https://img.shields.io/badge/PHP%20-%20%23777BB4?style=for-the-badge&logo=php&logoColor=black) | ![Prometheus](https://img.shields.io/badge/Prometheus%20-%20black?style=for-the-badge&logo=prometheus&logoColor=%23E6522C) |
+| ![Terraform](https://img.shields.io/badge/Terraform%20-%20%23844FBA?style=for-the-badge&logo=terraform&logoColor=grey) | ![Ubuntu](https://img.shields.io/badge/Ubuntu%20-%20red?style=for-the-badge&logo=ubuntu&logoColor=red) | ![Wordpress](https://img.shields.io/badge/Wordpress%20-%20%2321759B?style=for-the-badge&logo=wordpress) |
+</div>
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
