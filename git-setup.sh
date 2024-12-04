@@ -5,7 +5,7 @@
 LOG_FILE="/var/log/script-execution.log"
 
 # Function to check the exit status of the last executed command
-# read from standard input and write to standard output and files append
+# then read from standard input and write to standard output and files append
 
 check_exit_status() {
     if [ $? -ne 0 ]; then
