@@ -1,6 +1,20 @@
 #!/bin/bash
 # docs https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-create-dns-record
 
+LOG_FILE="/var/log/script-execution.log"
+
+# Function to check the exit status of the last executed command
+# then read from standard input and write to standard output and files append
+check_exit_status() {
+    if [ $? -ne 0 ]; then
+        echo -e "\e[31mError: $1 failed.\e[0m" | tee -a $LOG_FILE #red
+        exit 1
+    else
+        echo -e "\e[32m$1 succeeded.\e[0m" | tee -a $LOG_FILE #green
+    fi
+}
+
+
 # First, try to detect Azure by querying the Azure metadata service
 azure_response=$(curl -s -H "Metadata:true" "http://169.254.169.254/metadata/instance?api-version=2021-02-01")
 
@@ -29,7 +43,11 @@ public_ip=S_PUBLIC_IP
 CF_API=S_CF_API
 CF_ZONE_ID=S_CF_ZONE_ID
 
+
+check_exit_status "apt nginx"
+
 # Create the DNS record in Cloudflare
+sudo echo "Running curl POST request into Cloudflare API..." | tee -a $LOG_FILE
 curl --request POST \
   --url https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records \
   --header 'Content-Type: application/json' \
@@ -43,6 +61,9 @@ curl --request POST \
   "tags": [],
   "ttl": 3600
 }'
+check_exit_status "Cloudflare DNS API endpoint"
 
-# Proceed to install SSL via Certbot
+# Proceed to install Wordpress
+sudo echo "Running bash /root/EPA/wordpress-install.sh..." | tee -a $LOG_FILE
 sudo bash /root/EPA/wordpress-install.sh
+check_exit_status "Cloudflare-DNS finished"
