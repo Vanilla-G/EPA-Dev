@@ -85,23 +85,16 @@ check_exit_status "apt install php"
 # Append PHP version to log
 sudo php -v >> /var/log/script-execution.log
 
-# Stop and disable Apache2
+# Stop apache2
 sudo echo "Running stop apache2..." | tee -a $LOG_FILE
 sudo systemctl stop apache2
 check_exit_status "stop apache2"
-
+# Diable apache2
 sudo echo "Running disable apache2..." | tee -a $LOG_FILE
 sudo systemctl disable apache2
 check_exit_status "disable apache2"
 
 
-
-# Optional: Remove Apache2 (not executed)
-# sudo apt remove --purge apache2 -y
-
-
-# Rename default Apache page
-#sudo chown ubuntu:ubuntu /var/www/html/index.html
 sudo echo "Runniung mv /var/www/html/index.html /var/www/html/index.html.old..." | tee -a $LOG_FILE
 sudo mv /var/www/html/index.html /var/www/html/index.html.old
 check_exit_status "move /var/www/html/index.html"
