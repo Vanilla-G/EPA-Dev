@@ -5,32 +5,32 @@
 LOG_FILE="/var/log/script-execution.log"
 
 # To make script cross-comptable First, quesry Azure using the Azure metadata service
-azure_response=$(curl -s -H "Metadata:true" "http://169.254.169.254/metadata/instance?api-version=2021-02-01")
+AZURE_RESPONSE=$(curl -s -H "Metadata:true" "http://169.254.169.254/metadata/instance?api-version=2021-02-01")
 
 # A conditional statements checking azure query response, if response contains compute we are in Azure VM
-if [[ "$azure_response" == *"compute"* ]]; then
-  subdomain="az"
+if [[ "$AZURE_RESPONSE" == *"compute"* ]]; then
+  SUBDOMAIN="az"
 else
   # If Azure response is not found, check AWS metadata
-  aws_response=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+  AWS_RESPONSE=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
   
   # Check if AWS response contains "error"
-  if [[ "$aws_response" == *"error"* ]]; then
+  if [[ "$AWS_RESPONSE" == *"error"* ]]; then
     echo "Error: Unable to detect environment (AWS or Azure)."
     exit 1
   else
-    subdomain="aws"
+    SUBDOMAIN="aws"
   fi #Need to add other cloud providers.
 fi
 
 # A simplified condition, however this is binary, i do want to add the option to deploy in gcp as extra credit so will keep 
 # commented out until assessment date
 # Check if the Azure response contains "compute"
-#if [[ "$azure_response" == *"compute"* ]]; then
-#  subdomain="az"
+#if [[ "$AZURE_RESPONSE" == *"compute"* ]]; then
+#  SUBDOMAIN="az"
 #else
 #  # Assume AWS environment if not Azure
-#  subdomain="aws"
+#  SUBDOMAIN="aws"
 #fi
 
 
@@ -109,10 +109,10 @@ check_exit_status "move mv /root/EPA/nginx.conf /etc/nginx/conf.d/nginx.conf"
 
 
 # Update Nginx config with DNS record
-dns_record="${subdomain}.gball.uk"
+DNS_RECORD="${SUBDOMAIN}.gball.uk"
 sudo echo "Running sed -i DNS_RECORD to nginx.conf..." | tee -a $LOG_FILE
-sudo sed -i "s/SERVERNAME/$dns_record/g" /etc/nginx/conf.d/nginx.conf
-check_exit_status "sed -i dns_record to nginx.conf"
+sudo sed -i "s/SERVERNAME/$DNS_RECORD/g" /etc/nginx/conf.d/nginx.conf
+check_exit_status "sed -i DNS_RECORD to nginx.conf"
 
 
 # Test and reload Nginx
