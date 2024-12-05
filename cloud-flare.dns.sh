@@ -44,8 +44,6 @@ CF_API=S_CF_API
 CF_ZONE_ID=S_CF_ZONE_ID
 
 
-check_exit_status "apt nginx"
-
 # Create the DNS record in Cloudflare
 sudo echo "Running curl POST request into Cloudflare API..." | tee -a $LOG_FILE
 curl --request POST \
