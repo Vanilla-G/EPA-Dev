@@ -53,19 +53,22 @@ echo "CF_ZONE_ID: $CF_ZONE_ID" >> $LOG_FILE
 
 # Create the DNS record in Cloudflare
 sudo echo "Running curl POST request into Cloudflare API..." | tee -a $LOG_FILE
+
 curl --request POST \
   --url https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records \
   --header 'Content-Type: application/json' \
   --header "Authorization: Bearer $CF_API" \
-  --data '{
-  "content": "'$public_ip'",
-  "name": "'$my_domain'",
-  "proxied": true,
-  "type": "A",
-  "comment": "Automatically adding an A record",
-  "tags": [],
-  "ttl": 3600
-}'
+  --data "{
+  \"content\": \"$public_ip\",
+  \"name\": \"$my_domain\",
+  \"proxied\": true,
+  \"type\": \"A\",
+  \"comment\": \"Automatically adding an A record\",
+  \"tags\": [],
+  \"ttl\": 3600
+}"
+
+
 check_exit_status "Cloudflare DNS API endpoint"
 
 # Proceed to install Wordpress
