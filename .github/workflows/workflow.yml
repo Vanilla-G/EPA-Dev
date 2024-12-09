@@ -1,0 +1,42 @@
+name: CI - Terraform Plan & Apply
+
+on:
+  # Trigger on push to the "main" branch
+  push:
+    branches:
+      - main
+  # Trigger on workflow dispatch (manual run)
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    # Use the latest Ubuntu runner
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Set up Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.7 # Specify your desired Terraform version
+
+      # Initialize Terraform
+      - name: Terraform Init
+        run: terraform init
+
+      # Validate Terraform
+      - name: Terraform Validate
+        run: terraform validate
+
+      # Terraform Plan
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      # Terraform Apply (optional, confirm only for main branch)
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' # Run only on the main branch
+        run: terraform apply -auto-approve tfplan
