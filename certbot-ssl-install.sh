@@ -32,7 +32,7 @@ MYDOMAIN="${SUBDOMAIN}.${DOMAIN}"
 
 # Use Certbot to obtain and install the SSL certificate for the specified domain
 #sudo certbot --nginx --non-interactive --agree-tos --email $EMAIL -d $MYDOMAIN -v
-sudo certbot certonly --nginx --agree-tos --dry-run --email grahamball404@gmail.com -d $DOMAIN -v
+sudo certbot certonly --nginx --agree-tos --dry-run --email $EMAIL -d $DOMAIN -v
 
 # Nginx unit test that will reload Nginx to apply changes ONLY if the test is successful
 sudo nginx -t && sudo systemctl reload nginx
