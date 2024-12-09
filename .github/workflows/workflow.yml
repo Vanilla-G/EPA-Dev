@@ -8,6 +8,15 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      S_DOMAIN: ${{ secrets.S_DOMAIN }}
+      S_PUBLIC_IP: ${{ secrets.S_PUBLIC_IP }}
+      CF_API: ${{ secrets.CF_API }}
+      CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+      S_EMAIL: ${{ secrets.S_EMAIL }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
 
     steps:
     - name: Checkout code
