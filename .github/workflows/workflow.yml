@@ -32,16 +32,12 @@ jobs:
     - name: Transfer and Run Cloudflare Script on VM
       run: |
         echo "Transferring cloudflare-dns.sh to the server..."
-        scp -i private_key -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} ./cloudflare-dns.sh ${{ secrets.SSH_USERNAME }}@${{ secrets.S_ELASTIC_IP }}:~
         echo "Running cloudflare-dns.sh on the server..."
-        ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.S_ELASTIC_IP }} 'sudo bash ~/cloudflare-dns.sh || { echo "Script failed"; exit 1; }'
 
     - name: Transfer and Run Certbot Script on VM
       run: |
         echo "Transferring certbot-ssl-install.sh to the server..."
-        scp -i private_key -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} ./certbot-ssl-install.sh ${{ secrets.SSH_USERNAME }}@${{ secrets.S_ELASTIC_IP }}:~
         echo "Running certbot-ssl-install.sh on the server..."
-        ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.S_ELASTIC_IP }} 'sudo bash ~/certbot-ssl-install.sh || { echo "Script failed"; exit 1; }'
 
     - name: Set Up Terraform
       uses: hashicorp/setup-terraform@v2
