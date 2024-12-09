@@ -4,12 +4,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    env:
-      S_DOMAIN: ${{ secrets.S_DOMAIN }}
-      S_PUBLIC_IP: ${{ secrets.S_PUBLIC_IP }}
-      CF_API: ${{ secrets.CF_API }}
-      CF_ZONE_ID: ${{ secrets.CF_ZONE_ID || 'default_value' }}
-      
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -22,6 +16,11 @@ jobs:
         run: echo "AWS credentials configured."
 
       - name: Set Cloudflare Environment Variables
+        env:
+          S_DOMAIN: ${{ secrets.S_DOMAIN }}
+          S_PUBLIC_IP: ${{ secrets.S_PUBLIC_IP }}
+          CF_API: ${{ secrets.CF_API }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
         run: |
           echo "Cloudflare secrets set in environment"
           echo "S_DOMAIN=$S_DOMAIN"
@@ -39,6 +38,10 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          S_DOMAIN: ${{ secrets.S_DOMAIN }}
+          S_PUBLIC_IP: ${{ secrets.S_PUBLIC_IP }}
+          CF_API: ${{ secrets.CF_API }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
         run: terraform init
 
       - name: Terraform Plan
@@ -46,6 +49,10 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          S_DOMAIN: ${{ secrets.S_DOMAIN }}
+          S_PUBLIC_IP: ${{ secrets.S_PUBLIC_IP }}
+          CF_API: ${{ secrets.CF_API }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
         run: terraform plan -out=tfplan
 
       - name: Terraform Apply
@@ -53,4 +60,8 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          S_DOMAIN: ${{ secrets.S_DOMAIN }}
+          S_PUBLIC_IP: ${{ secrets.S_PUBLIC_IP }}
+          CF_API: ${{ secrets.CF_API }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
         run: terraform apply -auto-approve tfplan
