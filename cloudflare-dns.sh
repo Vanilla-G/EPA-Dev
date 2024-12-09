@@ -67,6 +67,21 @@ curl --request POST \
   "ttl": 3600
 }'
 
+
+response=curl --request POST \
+  --url https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records \
+  --header 'Content-Type: application/json' \
+  --header "Authorization: Bearer $CF_API" \
+  --data '{
+  "content": "'$public_ip'",
+  "name": "'$my_domain'",
+  "proxied": true,
+  "type": "A",
+  "comment": "Automatically adding an A record",
+  "tags": [],
+  "ttl": 360
+}'
+
 echo "Cloudflare API response: $response" | tee -a $LOG_FILE
 
 check_exit_status "Cloudflare DNS API endpoint"
