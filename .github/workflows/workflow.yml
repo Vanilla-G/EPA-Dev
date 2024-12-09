@@ -58,19 +58,3 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         run: terraform apply -auto-approve tfplan
-
-      - name: Run cloudflare-dns.sh on EC2
-        env:
-          S_DOMAIN: ${{ secrets.S_DOMAIN }}
-          S_PUBLIC_IP: ${{ secrets.S_PUBLIC_IP }}
-          CF_API: ${{ secrets.CF_API }}
-          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-        run: |
-          echo "Running cloudflare-dns.sh"
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ubuntu@${{ secrets.EC2_PUBLIC_IP }} <<EOF
-            export S_DOMAIN="${{ secrets.S_DOMAIN }}"
-            export S_PUBLIC_IP="${{ secrets.S_PUBLIC_IP }}"
-            export CF_API="${{ secrets.CF_API }}"
-            export CF_ZONE_ID="${{ secrets.CF_ZONE_ID }}"
-            bash /root/EPA/cloudflare-dns.sh
-          EOF
