@@ -1,4 +1,4 @@
-name: Test and Deploy with Bash and Terraform
+name: Test and Deploy with Terraform and Bash Scripts
 
 on:
   push:
@@ -8,17 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      S_DOMAIN: ${{ secrets.S_DOMAIN }}
-      S_PUBLIC_IP: ${{ secrets.S_PUBLIC_IP }}
-      CF_API: ${{ secrets.CF_API }}
-      CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-      S_EMAIL: ${{ secrets.S_EMAIL }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
 
     steps:
+    # Checkout code
     - name: Checkout code
       uses: actions/checkout@v4
 
@@ -28,9 +20,11 @@ jobs:
       with:
         terraform_version: 1.5.5
 
+    # Initialize Terraform
     - name: Initialize Terraform
       run: terraform init
 
+    # Terraform Plan
     - name: Terraform Plan
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -42,6 +36,7 @@ jobs:
         CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
       run: terraform plan -out=tfplan
 
+    # Terraform Apply
     - name: Terraform Apply
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -53,36 +48,86 @@ jobs:
         CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
       run: terraform apply -auto-approve tfplan
 
-    # Edit Cloudflare Variables in Bash Script
-    - name: Edit Cloudflare Variables in Bash Script
+    # Debug SSH connection
+    - name: Debug SSH connection
       run: |
-        echo "Editing variables in cloudflare-dns.sh..."
-        sed -i 's/S_DOMAIN/${{ secrets.S_DOMAIN }}/g' ./cloudflare-dns.sh
-        sed -i 's/S_PUBLIC_IP/${{ secrets.S_PUBLIC_IP }}/g' ./cloudflare-dns.sh
-        sed -i 's/S_CF_API/${{ secrets.CF_API }}/g' ./cloudflare-dns.sh
-        sed -i 's/S_CF_ZONE_ID/${{ secrets.CF_ZONE_ID }}/g' ./cloudflare-dns.sh
-        cat ./cloudflare-dns.sh  # Confirm the edits
+        echo "Testing SSH connection..."
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
+        chmod 600 private_key
+    
+        echo "Checking key permissions..."
+        ls -l private_key
+    
+        echo "Testing SSH connection to ${{ secrets.S_PUBLIC_IP }} as ${{ secrets.SSH_USERNAME }} on port ${{ secrets.SSH_PORT }}..."
+        ssh -vvv -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.S_PUBLIC_IP }} "echo 'SSH Connection Successful'"
 
-    # Edit Certbot Variables in Bash Script
-    - name: Edit Certbot Variables in Bash Script
+    # Edit Cloudflare and other variables in Bash Scripts
+    - name: Edit CF Variables
       run: |
-        echo "Editing variables in certbot-ssl-install.sh..."
-        sed -i 's/S_DOMAIN/${{ secrets.S_DOMAIN }}/g' ./certbot-ssl-install.sh
+        echo "Editing Cloudflare variables in lemp-setup.sh..."
+        sed -i 's/S_DOMAIN/${{ secrets.S_DOMAIN }}/g' ./lemp-setup.sh
+        sed -i 's/S_S_PUBLIC_IP/${{ secrets.S_PUBLIC_IP }}/g' ./lemp-setup.sh
+        sed -i 's/S_CF_API/${{ secrets.SECRET_CF_API }}/g' ./lemp-setup.sh
+        sed -i 's/S_CF_ZONE_ID/${{ secrets.CF_ZONE_ID }}/g' ./lemp-setup.sh
+        cat ./lemp-setup.sh  # Print file contents to confirm the edits
+        
+        echo "Editing Cloudflare variables in certbot-ssl-install.sh..."
         sed -i 's/S_EMAIL/${{ secrets.S_EMAIL }}/g' ./certbot-ssl-install.sh
-        cat ./certbot-ssl-install.sh  # Confirm the edits
+        sed -i 's/S_DOMAIN/${{ secrets.S_DOMAIN }}/g' ./certbot-ssl-install.sh
+        cat ./certbot-ssl-install.sh  # Print file contents to confirm the edits
 
-    # Transfer and Run Cloudflare Script on VM
-    - name: Transfer and Run Cloudflare Script on VM
+        echo "Editing Cloudflare variables in cloudflare-dns.sh..."
+        sed -i 's/S_DOMAIN/${{ secrets.S_DOMAIN }}/g' ./cloudflare-dns.sh
+        sed -i 's/S_S_PUBLIC_IP/${{ secrets.S_PUBLIC_IP }}/g' ./cloudflare-dns.sh
+        sed -i 's/S_CF_API/${{ secrets.S_CF_API }}/g' ./cloudflare-dns.sh
+        sed -i 's/S_CF_ZONE_ID/${{ secrets.s_CF_ZONE_ID }}/g' ./cloudflare-dns.sh
+        cat ./cloudflare-dns.sh  # Print file contents to confirm the edits
+        
+    # Copy files to VM using SCP
+    - name: Copy files to VM
       run: |
-        echo "Transferring cloudflare-dns.sh to the server..."
-        # Add scp command here to transfer the script to the VM
-        echo "Running cloudflare-dns.sh on the server..."
-        # Add ssh command to run the script on the VM
+        echo "Copying files to VM..."
+        scp -r -i private_key -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} "${PWD}/" ${{ secrets.SSH_USERNAME }}@${{ secrets.S_PUBLIC_IP }}:/opt/script/
+        echo "Files copied successfully."
 
-    # Transfer and Run Certbot Script on VM
-    - name: Transfer and Run Certbot Script on VM
+    # Run git-setup.sh on the VM
+    - name: Run git-setup.sh on the VM
       run: |
-        echo "Transferring certbot-ssl-install.sh to the server..."
-        # Add scp command here to transfer the script to the VM
-        echo "Running certbot-ssl-install.sh on the server..."
-        # Add ssh command to run the script on the VM
+        echo "Running git-setup.sh on VM..."
+        ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /opt/script/EPA/git-setup.sh || { echo "Script failed"; exit 1; }' 
+        echo "Script executed successfully."
+
+    # Run lemp-setup.sh on the VM
+    - name: Run lemp-setup.sh on the VM
+      run: |
+        echo "Running lemp-setup.sh on VM..."
+        ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /opt/script/EPA/lemp-setup.sh || { echo "Script failed"; exit 1; }'
+        echo "Script executed successfully."
+
+    # Run cloudflare-dns.sh on the VM
+    - name: Run cloudflare-dns.sh on the VM
+      run: |
+        echo "Running cloudflare-dns.sh on VM..."
+        ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /opt/script/EPA/cloudflare-dns.sh || { echo "Script failed"; exit 1; }'
+        echo "Script executed successfully."
+
+    # Run wordpress-install.sh on the VM
+    - name: Run wordpress-install.sh on the VM
+      run: |
+        echo "Running wordpress-install.sh on VM..."
+        ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /opt/script/EPA/wordpress-install.sh || { echo "Script failed"; exit 1; }'
+        echo "Script executed successfully."
+
+    # Run certbot-ssl-install.sh on the VM
+    - name: Run certbot-ssl-install.sh on the VM
+      run: |
+        echo "Running certbot-ssl-install.sh on VM..."
+        ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /opt/script/EPA/certbot-ssl-install.sh || { echo "Script failed"; exit 1; }'
+        echo "Script executed successfully."
+    
+    # Run certbot-ssl-install.sh on the VM
+    - name: Run certbot-ssl-install.sh on the VM
+      run: |
+        echo "Running certbot-ssl-install.sh on VM..."
+        ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /opt/script/EPA/mount.sh || { echo "Script failed"; exit 1; }'
+        echo "Script executed successfully."

@@ -35,7 +35,7 @@ fi
 
 # Set the subdomain and IP address for Cloudflare DNS
 domain=S_DOMAIN
-my_domain=${subdomain}.S_DOMAIN
+my_domain="${subdomain}.${S_DOMAIN}"
 public_ip=S_PUBLIC_IP
 
 # Cloudflare API and Zone Info
