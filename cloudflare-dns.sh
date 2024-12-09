@@ -34,13 +34,13 @@ else
 fi
 
 # Set the subdomain and IP address for Cloudflare DNS
-domain=$S_DOMAIN
-my_domain=${subdomain}.${S_DOMAIN}
-public_ip=$S_PUBLIC_IP
+domain=S_DOMAIN
+my_domain=${subdomain}.{S_DOMAIN}
+public_ip=S_PUBLIC_IP
 
 # Cloudflare API and Zone Info
-CF_API=$CF_API
-CF_ZONE_ID=$CF_ZONE_ID
+CF_API=CF_API
+CF_ZONE_ID=CF_ZONE_ID
 
 echo "S_DOMAIN: $S_DOMAIN" >> $LOG_FILE
 echo "S_PUBLIC_IP: $S_PUBLIC_IP" >> $LOG_FILE
@@ -53,19 +53,19 @@ sudo echo "Running curl POST request into Cloudflare API..." | tee -a $LOG_FILE
 # Debug
 echo "*****Curl data: {\"content\": \"$public_ip\", \"name\": \"$my_domain\", \"proxied\": true, \"type\": \"A\", \"comment\": \"Automatically adding A record\", \"tags\": [], \"ttl\": 3600}" | tee -a $LOG_FILE
 
-response=$(curl --request POST \
+curl --request POST \
   --url https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records \
   --header 'Content-Type: application/json' \
   --header "Authorization: Bearer $CF_API" \
-  --data "{
-  \"content\": \"$public_ip\",
-  \"name\": \"$my_domain\",
-  \"proxied\": true,
-  \"type\": \"A\",
-  \"comment\": \"Automatically adding A record\",
-  \"tags\": [],
-  \"ttl\": 3600
-}")
+  --data '{
+  "content": "'$public_ip'",
+  "name": "'$my_domain'",
+  "proxied": true,
+  "type": "A",
+  "comment": "Automatically adding an A record",
+  "tags": [],
+  "ttl": 3600
+}'
 
 echo "Cloudflare API response: $response" | tee -a $LOG_FILE
 
