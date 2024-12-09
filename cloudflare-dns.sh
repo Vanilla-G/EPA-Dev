@@ -34,13 +34,13 @@ else
 fi
 
 # Set the subdomain and IP address for Cloudflare DNS
-domain="$S_DOMAIN"
-my_domain="${subdomain}.${S_DOMAIN}"
-public_ip="$S_PUBLIC_IP"
+domain=S_DOMAIN
+my_domain=${subdomain}.${S_DOMAIN}
+public_ip=S_PUBLIC_IP
 
 # Cloudflare API and Zone Info
-CF_API="$CF_API"
-CF_ZONE_ID="$CF_ZONE_ID"
+CF_API=S_CF_API
+CF_ZONE_ID=S_CF_ZONE_ID
 
 echo "S_DOMAIN: $S_DOMAIN" >> $LOG_FILE
 echo "S_PUBLIC_IP: $S_PUBLIC_IP" >> $LOG_FILE
