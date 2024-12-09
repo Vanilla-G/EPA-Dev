@@ -171,7 +171,7 @@ resource "aws_instance" "example" {
 
               # Clone the GitHub repository
               sudo echo "Cloning GitHub repository..." | tee -a $LOG_FILE
-              sudo git clone https://$${GITHUB_USERNAME}:$${GITHUB_TOKEN}@github.com/Vanilla-G/EPA.git /root/EPA
+              sudo git clone https://$${GH_USERNAME}:$${GH_TOKEN}@github.com/Vanilla-G/EPA.git /root/EPA
               check_exit_status "clone repo"
 
               # Change permissions of the cloned repository
