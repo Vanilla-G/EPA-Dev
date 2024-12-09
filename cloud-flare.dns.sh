@@ -44,6 +44,13 @@ CF_API=S_CF_API
 CF_ZONE_ID=S_CF_ZONE_ID
 
 
+echo "S_DOMAIN: $S_DOMAIN" >> $LOG_FILE
+echo "S_PUBLIC_IP: $S_PUBLIC_IP" >> $LOG_FILE
+echo "CF_API: $CF_API" >> $LOG_FILE
+echo "CF_ZONE_ID: $CF_ZONE_ID" >> $LOG_FILE
+
+
+
 # Create the DNS record in Cloudflare
 sudo echo "Running curl POST request into Cloudflare API..." | tee -a $LOG_FILE
 curl --request POST \
