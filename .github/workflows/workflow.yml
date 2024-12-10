@@ -3,7 +3,7 @@ name: Deploy to AWS
 on:
   push:
     branches:
-      - main
+      - terraform
 
 jobs:
   deploy:
@@ -61,82 +61,5 @@ jobs:
           TF_VAR_key_name: ${{ secrets.AWS_KEY_NAME }}
         run: terraform apply -auto-approve tfplan
 
-      - name: Debug SSH connection
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          S_PUBLIC_IP: ${{ secrets.S_PUBLIC_IP }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PORT: ${{ secrets.SSH_PORT }}
-        run: |
-          echo "Testing SSH connection..."
-          echo "Private key directory ${pwd}"
-          echo "$SSH_PRIVATE_KEY" > private_key
-          chmod 600 private_key
-      
-          echo "Checking key permissions..."
-          ls -l private_key
-      
-          echo "Testing SSH connection to $S_PUBLIC_IP as $SSH_USER on port $SSH_PORT..."
-          ssh -vvv -i private_key -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$S_PUBLIC_IP "echo 'SSH Connection Successful'"
-  
-      - name: Edit ALL Variables   
-        run: |
-          echo "Secrets to lemp-setup.sh"
-          sed -i 's/S_DOMAIN/${{ secrets.S_DOMAIN }}/g' ./lemp-setup.sh
-          cat ./lemp-setup.sh
-
-          echo "Secrets to cloudflare-dns.sh"
-          sed -i 's/S_DOMAIN/${{ secrets.S_DOMAIN }}/g' ./cloudflare-dns.sh
-          sed -i 's/S_PUBLIC_IP/${{ secrets.S_PUBLIC_IP }}/g' ./cloudflare-dns.sh
-          sed -i 's/S_CF_API/${{ secrets.S_CF_API }}/g' ./cloudflare-dns.sh
-          sed -i 's/S_CF_ZONE_ID/${{ secrets.S_CF_ZONE_ID }}/g' ./cloudflare-dns.sh
-          cat ./cloudflare-dns.sh
-
-          echo "Secrets to wordpress-install.sh"
-          cat ./wordpress-install.sh
-
-          echo "Secrets to certbot-ssl-install.sh"
-          sed -i 's/S_DOMAIN/${{ secrets.S_DOMAIN }}/g' ./certbot-ssl-install.sh
-          sed -i 's/S_EMAIL/${{ secrets.S_EMAIL }}/g' ./certbot-ssl-install.sh
-          cat ./certbot-ssl-install.sh
-
-      - name: Copy files to VM
-        run: |
-          echo "Copying files to VM..."
-          echo "Current working directory: ${PWD}"
-
-          scp -v -r -i private_key -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} "${PWD}/" ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }}:~
-          echo "Files copied successfully."
-            
-      - name: Run git-setup.sh on the VM
-        run: |
-          echo "Running git-setup.sh on VM..."
-          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA/git-setup.sh || { echo "Script failed"; exit 1; }' 
-          echo "Script executed successfully."
-          - name: Run lemp-setup.sh on the VM
-          run: |
-          echo "Running lemp-setup.sh on VM..."
-          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA/lemp-setup.sh || { echo "Script failed"; exit 1; }'
-          echo "Script executed successfully."
-
-      - name: Run cloudflare-dns.sh on the VM
-        run: |
-          echo "Running cloudflare-dns.sh on VM..."
-          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA/cloudflare-dns.sh || { echo "Script failed"; exit 1; }'
-          echo "Script executed successfully."
-        
-      - name: Run wordpress-install.sh on the VM
-        run: |
-          echo "Running wordpress-install.sh on VM..."
-          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA/wordpress-install.sh || { echo "Script failed"; exit 1; }'
-          echo "Script executed successfully."
-    
-      - name: Run certbot-ssl-install.sh on the VM
-        run: |
-          echo "Running certbot-ssl-install.sh on VM..."
-          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA/certbot-ssl-install.sh || { echo "Script failed"; exit 1; }'
-          echo "Script executed successfully."
-
-          
 
         
