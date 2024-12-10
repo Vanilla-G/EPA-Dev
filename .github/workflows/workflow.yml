@@ -24,8 +24,8 @@ jobs:
         env:
           S_DOMAIN: ${{ secrets.S_DOMAIN }}
           S_PUBLIC_IP: ${{ secrets.S_PUBLIC_IP }}
-          CF_API: ${{ secrets.S_CF_API }}
-          CF_ZONE_ID: ${{ secrets.S_CF_ZONE_ID }}
+          S_CF_API: ${{ secrets.S_CF_API }}
+          S_CF_ZONE_ID: ${{ secrets.S_CF_ZONE_ID }}
         run: |
           echo "Cloudflare secrets set in environment"
           echo "S_DOMAIN=$S_DOMAIN"
