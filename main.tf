@@ -127,19 +127,28 @@ resource "aws_volume_attachment" "example" {
   ]
 }
 
-# EC2 instance setup
+# AWS EC2 instance setup
 resource "aws_instance" "example" {
   ami           = "ami-0e8d228ad90af673b" # Replace with the appropriate AMI ID
   instance_type = "t2.large"
   subnet_id     = aws_subnet.example.id
-  key_name      = var.key_name # Specify the existing key pair name here
 
   vpc_security_group_ids = [aws_security_group.example.id]
+
+  # Injecting key name
+  key_name = var.aws_key_pair_name
 
   tags = {
     Name = "AWS-EPA-instance"
   }
 }
+
+# Define the variable for key name
+variable "aws_key_pair_name" {
+  description = "The name of the existing AWS key pair"
+  type        = string
+}
+
 
 # Elastic IP Association
 resource "aws_eip_association" "eip_assoc" {
