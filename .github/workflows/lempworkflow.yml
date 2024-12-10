@@ -78,8 +78,9 @@ jobs:
           echo "Running git-setup.sh on VM..."
           ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA-Dev-AWS/git-setup.sh || { echo "Script failed"; exit 1; }' 
           echo "Script executed successfully."
-          - name: Run lemp-setup.sh on the VM
-          run: |
+          
+      - name: Run lemp-setup.sh on the VM
+        run: |
           echo "Running lemp-setup.sh on VM..."
           ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA-Dev-AWS/lemp-setup.sh || { echo "Script failed"; exit 1; }'
           echo "Script executed successfully."

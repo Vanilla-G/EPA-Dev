@@ -103,9 +103,9 @@ check_exit_status "move /var/www/html/index.html"
 
 # Replace Nginx config
 #sudo chown ubuntu:ubuntu /root/EPA/nginx.conf
-sudo echo "Running mv /root/EPA/nginx.conf /etc/nginx/conf.d/nginx.conf..." | tee -a $LOG_FILE
-sudo mv /root/EPA/nginx.conf /etc/nginx/conf.d/nginx.conf
-check_exit_status "move mv /root/EPA/nginx.conf /etc/nginx/conf.d/nginx.conf"
+sudo echo "Running mv /home/ubuntu/EPA-Dev-AWS/nginx.conf /etc/nginx/conf.d/nginx.conf..." | tee -a $LOG_FILE
+sudo mv /home/ubuntu/EPA-Dev-AWS/EPA/nginx.conf /etc/nginx/conf.d/nginx.conf
+check_exit_status "move mv /home/ubuntu/EPA-Dev-AWS/nginx.conf /etc/nginx/conf.d/nginx.conf"
 
 DOMAIN=S_DOMAIN
 # Update Nginx config with DNS record
