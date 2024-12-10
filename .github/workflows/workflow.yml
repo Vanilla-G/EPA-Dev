@@ -20,6 +20,13 @@ jobs:
       with:
         terraform_version: 1.5.5
 
+    # Inject the key_name into Terraform configuration
+    - name: Configure Terraform with Key Name
+      run: |
+        echo "Injecting key_name into Terraform configuration..."
+        echo 'variable "key_name" { default = "" }' >> variables.tf
+        echo 'key_name = "${{ secrets.AWS_KEY_PAIR_NAME }}"' > key_name_override.tf
+
     # Initialize Terraform
     - name: Initialize Terraform
       run: terraform init
@@ -34,7 +41,7 @@ jobs:
         S_PUBLIC_IP: ${{ secrets.S_PUBLIC_IP }}
         CF_API: ${{ secrets.CF_API }}
         CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-      run: terraform plan -out=tfplan
+      run: terraform plan -var="key_name=${{ secrets.AWS_KEY_PAIR_NAME }}" -out=tfplan
 
     # Terraform Apply
     - name: Terraform Apply
@@ -46,7 +53,7 @@ jobs:
         S_PUBLIC_IP: ${{ secrets.S_PUBLIC_IP }}
         CF_API: ${{ secrets.CF_API }}
         CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-      run: terraform apply -auto-approve tfplan
+      run: terraform apply -auto-approve -var="key_name=${{ secrets.AWS_KEY_PAIR_NAME }}" tfplan
 
     # Debug SSH connection
     - name: Debug SSH connection
@@ -61,6 +68,7 @@ jobs:
         echo "Testing SSH connection to ${{ secrets.S_PUBLIC_IP }} as ${{ secrets.SSH_USER }} on port ${{ secrets.SSH_PORT }}..."
         ssh -vvv -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} "echo 'SSH Connection Successful'"
 
+    
     # Edit Cloudflare and other variables in Bash Scripts
     - name: Edit CF Variables
       run: |
