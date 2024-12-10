@@ -102,13 +102,13 @@ jobs:
       - name: Copy files to VM
         run: |
           echo "Copying files to VM..."
-          scp -r -i private_key -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} "${PWD}/" ${{ secrets.SSH_USERNAME }}@${{ secrets.S_PUBLIC_IP }}:~
+          scp -r -i private_key -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} "${PWD}/" ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }}:~
           echo "Files copied successfully."
             
       - name: Run git-setup.sh on the VM
         run: |
           echo "Running git-setup.sh on VM..."
-          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.ELASTIC_IP }} 'sudo bash /home/ubuntu/EPA-Wordpress-project/git-setup.sh || { echo "Script failed"; exit 1; }' 
+          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA-Wordpress-project/git-setup.sh || { echo "Script failed"; exit 1; }' 
           echo "Script executed successfully."
 
 
