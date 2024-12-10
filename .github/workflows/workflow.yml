@@ -108,9 +108,31 @@ jobs:
       - name: Run git-setup.sh on the VM
         run: |
           echo "Running git-setup.sh on VM..."
-          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA-Wordpress-project/git-setup.sh || { echo "Script failed"; exit 1; }' 
+          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA/git-setup.sh || { echo "Script failed"; exit 1; }' 
+          echo "Script executed successfully."
+          - name: Run lemp-setup.sh on the VM
+          run: |
+          echo "Running lemp-setup.sh on VM..."
+          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA/lemp-setup.sh || { echo "Script failed"; exit 1; }'
           echo "Script executed successfully."
 
+      - name: Run cloudflare-dns.sh on the VM
+        run: |
+          echo "Running cloudflare-dns.sh on VM..."
+          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA/cloudflare-dns.sh || { echo "Script failed"; exit 1; }'
+          echo "Script executed successfully."
+        
+      - name: Run wordpress-install.sh on the VM
+        run: |
+          echo "Running wordpress-install.sh on VM..."
+          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA/wordpress-install.sh || { echo "Script failed"; exit 1; }'
+          echo "Script executed successfully."
+    
+      - name: Run certbot-ssl-install.sh on the VM
+        run: |
+          echo "Running certbot-ssl-install.sh on VM..."
+          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA/certbot-ssl-install.sh || { echo "Script failed"; exit 1; }'
+          echo "Script executed successfully."
 
           
 
