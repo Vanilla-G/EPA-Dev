@@ -132,6 +132,7 @@ resource "aws_instance" "example" {
   ami           = "ami-0e8d228ad90af673b" # Replace with the appropriate AMI ID
   instance_type = "t2.large"
   subnet_id     = aws_subnet.example.id
+  key_name      = var.key_name
 
   vpc_security_group_ids = [aws_security_group.example.id]
 
@@ -186,6 +187,12 @@ resource "aws_instance" "example" {
   tags = {
     Name = "AWS-EPA-instance"
   }
+}
+
+variable "key_name" {
+  description = "The key pair to use for the instance"
+  type        = string
+  
 }
 
 # Elastic IP Association
