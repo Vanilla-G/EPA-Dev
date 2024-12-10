@@ -13,24 +13,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         
-        
-      - name: Debug SSH connection
-        env:
-          S_PUBLIC_IP: ${{ secrets.S_PUBLIC_IP }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PORT: ${{ secrets.SSH_PORT }}
-        run: |
-          echo "Testing SSH connection..."
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
-          chmod 600 private_key
-      
-          echo "Checking key permissions..."
-          ls -l private_key
-      
-          echo "Testing SSH connection to ${{ secrets.S_PUBLIC_IP }} as ${{ secrets.SSH_USER }} on port ${{ secrets.SSH_PORT }}..."
-          ssh -vvv -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} "echo 'SSH Connection Successful'"
-  
-      
       - name: Set AWS Credentials
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
