@@ -102,6 +102,8 @@ jobs:
       - name: Copy files to VM
         run: |
           echo "Copying files to VM..."
+          echo "Current working directory: ${PWD}"
+
           scp -r -i private_key -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} "${PWD}/" ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }}:~
           echo "Files copied successfully."
             
