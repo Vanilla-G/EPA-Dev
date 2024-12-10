@@ -35,24 +35,24 @@ sudo apt upgrade -y
 check_exit_status "apt upgrade"
 
 # Checking if the directory exists before cloning the GitHub repository
-if [ ! -d "/root/EPA" ]; then
-    sudo mkdir -p /root/EPA
+if [ ! -d "/home/ubuntu/EPA-Dev-AWS" ]; then
+    sudo mkdir -p /home/ubuntu/EPA-Dev-AWS
 fi
-check_exit_status "Creating directory /root/EPA"
+check_exit_status "Creating directory /home/ubuntu/EPA-Dev-AWS"
 
 # Clone the GitHub repository
 sudo echo "Cloning GitHub repository..." | tee -a $LOG_FILE
-sudo git clone https://github.com/Vanilla-G/EPA-Dev.git /root/EPA
+sudo git clone https://github.com/Vanilla-G/EPA-Dev-AWS.git /home/ubuntu/EPA-Dev-AWS
 check_exit_status "Cloning GitHub repository"
 
 # Change permissions of the cloned repository
 sudo echo "Changing permissions of the cloned repository..." | tee -a $LOG_FILE
-sudo chmod -R 755 /root/EPA
+sudo chmod -R 755 /home/ubuntu/EPA-Dev-AWS
 check_exit_status "Changing permissions of the cloned repository"
 
 # Run lemp-setup.sh script
-#sudo echo "Running /root/EPA/lemp-setup.sh..." | tee -a $LOG_FILE
-#sudo bash /root/EPA/lemp-setup.sh
-#check_exit_status "Run /root/EPA/lemp-setup.sh"
+#sudo echo "Running /home/ubuntu/EPA-Dev-AWS/lemp-setup.sh..." | tee -a $LOG_FILE
+#sudo bash /home/ubuntu/EPA-Dev-AWS/lemp-setup.sh
+#check_exit_status "Run /home/ubuntu/EPA-Dev-AWS/lemp-setup.sh"
 
 
