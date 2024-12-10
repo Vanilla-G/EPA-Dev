@@ -15,6 +15,10 @@ jobs:
         
         
       - name: Debug SSH connection
+        env:
+          S_PUBLIC_IP: ${{ secrets.S_PUBLIC_IP }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
           echo "Testing SSH connection..."
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
