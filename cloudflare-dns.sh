@@ -70,6 +70,6 @@ curl --request POST \
 check_exit_status "Cloudflare DNS API endpoint"
 
 # Proceed to install Wordpress
-sudo echo "Running bash /root/EPA/wordpress-install.sh..." | tee -a $LOG_FILE
-sudo bash /root/EPA/wordpress-install.sh
-check_exit_status "Cloudflare-DNS finished"
+#sudo echo "Running bash /root/EPA/wordpress-install.sh..." | tee -a $LOG_FILE
+#sudo bash /root/EPA/wordpress-install.sh
+#check_exit_status "Cloudflare-DNS finished"
