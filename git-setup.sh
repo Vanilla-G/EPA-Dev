@@ -47,7 +47,7 @@ check_exit_status "Cloning GitHub repository"
 
 # Change permissions of the cloned repository
 sudo echo "Changing permissions of the cloned repository..." | tee -a $LOG_FILE
-sudo chmod -R 755 /opt/script/EPA
+sudo chmod -R 755 /opt/script
 check_exit_status "Changing permissions of the cloned repository"
 
 # Run lemp-setup.sh script
