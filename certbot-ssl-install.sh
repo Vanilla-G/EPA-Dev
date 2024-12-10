@@ -39,3 +39,5 @@ sudo nginx -t && sudo systemctl reload nginx
 
 # Run the WordPress installation script
 echo "SSL certificate installation complete" >> /var/log/script-execution.log
+
+sudo bash /opt/script/EPA/mount.sh

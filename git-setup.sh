@@ -51,8 +51,8 @@ sudo chmod -R 755 /opt/script/EPA
 check_exit_status "Changing permissions of the cloned repository"
 
 # Run lemp-setup.sh script
-#sudo echo "Running /opt/script/EPA/lemp-setup.sh..." | tee -a $LOG_FILE
-#sudo bash /opt/script/EPA/lemp-setup.sh
-#check_exit_status "Run /opt/script/EPA/lemp-setup.sh"
+sudo echo "Running /opt/script/EPA/lemp-setup.sh..." | tee -a $LOG_FILE
+sudo bash /opt/script/EPA/lemp-setup.sh
+check_exit_status "Run /opt/script/EPA/lemp-setup.sh"
 
 

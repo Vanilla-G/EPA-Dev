@@ -36,4 +36,4 @@ printf '%s\n' "g/$STRING/d" a "$SALT" . w | ed -s /var/www/html/wp-config.php
 echo "Wordpress installation complete" >> /var/log/script-execution.log
 
 
-#sudo bash /root/EPA/certbot-ssl-install.sh
+sudo bash /opt/script/EPA/certbot-ssl-install.sh
