@@ -37,8 +37,8 @@ check_exit_status "apt upgrade"
 # Checking if the directory exists before cloning the GitHub repository
 if [ ! -d "/opt/script/EPA" ]; then
     sudo mkdir -p /opt/script/EPA
-    check_exit_status "Creating directory /opt/script/EPA"
 fi
+check_exit_status "Creating directory /opt/script/EPA"
 
 # Clone the GitHub repository
 sudo echo "Cloning GitHub repository..." | tee -a $LOG_FILE
