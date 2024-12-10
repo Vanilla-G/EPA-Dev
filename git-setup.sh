@@ -41,9 +41,9 @@ check_exit_status "apt upgrade"
 #check_exit_status "Creating directory /home/ubuntu/EPA-Dev-AWS"
 
 # Clone the GitHub repository
-sudo echo "Cloning GitHub repository..." | tee -a $LOG_FILE
-sudo git clone https://github.com/Vanilla-G/EPA-Dev-AWS.git /home/ubuntu/EPA-Dev-AWS
-check_exit_status "Cloning GitHub repository"
+#sudo echo "Cloning GitHub repository..." | tee -a $LOG_FILE
+#sudo git clone https://github.com/Vanilla-G/EPA-Dev-AWS.git /home/ubuntu/EPA-Dev-AWS
+#check_exit_status "Cloning GitHub repository"
 
 # Change permissions of the cloned repository
 sudo echo "Changing permissions of the cloned repository..." | tee -a $LOG_FILE
