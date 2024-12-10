@@ -35,24 +35,24 @@ sudo apt upgrade -y
 check_exit_status "apt upgrade"
 
 # Checking if the directory exists before cloning the GitHub repository
-if [ ! -d "/opt/script/EPA" ]; then
-    sudo mkdir -p /opt/script/EPA
+if [ ! -d "/root/EPA" ]; then
+    sudo mkdir -p /root/EPA
 fi
-check_exit_status "Creating directory /opt/script/EPA"
+check_exit_status "Creating directory /root/EPA"
 
 # Clone the GitHub repository
 sudo echo "Cloning GitHub repository..." | tee -a $LOG_FILE
-sudo git clone https://github.com/Vanilla-G/EPA-Dev.git /opt/script/EPA
+sudo git clone https://github.com/Vanilla-G/EPA-Dev.git /root/EPA
 check_exit_status "Cloning GitHub repository"
 
 # Change permissions of the cloned repository
 sudo echo "Changing permissions of the cloned repository..." | tee -a $LOG_FILE
-sudo chmod -R 755 /opt/script
+sudo chmod -R 755 /root/EPA
 check_exit_status "Changing permissions of the cloned repository"
 
 # Run lemp-setup.sh script
-sudo echo "Running /opt/script/EPA/lemp-setup.sh..." | tee -a $LOG_FILE
-sudo bash /opt/script/EPA/lemp-setup.sh
-check_exit_status "Run /opt/script/EPA/lemp-setup.sh"
+sudo echo "Running /root/EPA/lemp-setup.sh..." | tee -a $LOG_FILE
+sudo bash /root/EPA/lemp-setup.sh
+check_exit_status "Run /root/EPA/lemp-setup.sh"
 
 
