@@ -123,6 +123,6 @@ sudo systemctl reload nginx
 check_exit_status "disable apache2"
 
 # I should add ip to CF dns
-sudo echo "Running bash /opt/script/EPA/cloudflare-dns.sh..." | tee -a $LOG_FILE
-sudo bash /opt/script/EPA/cloudflare-dns.sh
-check_exit_status "bash /opt/script/EPA/cloudflare-dns.sh"
+sudo echo "Running bash /root/EPA/cloudflare-dns.sh..." | tee -a $LOG_FILE
+sudo bash /root/EPA/cloudflare-dns.sh
+check_exit_status "bash /root/EPA/cloudflare-dns.sh"
