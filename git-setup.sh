@@ -35,10 +35,10 @@ sudo apt upgrade -y
 check_exit_status "apt upgrade"
 
 # Checking if the directory exists before cloning the GitHub repository
-if [ ! -d "/home/ubuntu/EPA-Dev-AWS" ]; then
-    sudo mkdir -p /home/ubuntu/EPA-Dev-AWS
-fi
-check_exit_status "Creating directory /home/ubuntu/EPA-Dev-AWS"
+#if [ ! -d "/home/ubuntu/EPA-Dev-AWS" ]; then
+#    sudo mkdir -p /home/ubuntu/EPA-Dev-AWS
+#fi
+#check_exit_status "Creating directory /home/ubuntu/EPA-Dev-AWS"
 
 # Clone the GitHub repository
 sudo echo "Cloning GitHub repository..." | tee -a $LOG_FILE
