@@ -137,9 +137,11 @@ resource "aws_instance" "example" {
 
   user_data = <<-EOF
              #!/bin/bash
+
               
               # Log file path
               LOG_FILE="/var/log/script-execution.log"
+
               # Function to check the exit status of the last executed command
               check_exit_status() {
                   if [ $? -ne 0 ]; then
@@ -149,30 +151,38 @@ resource "aws_instance" "example" {
                       echo -e "\e[32m$1 succeeded.\e[0m" | tee -a $LOG_FILE
                   fi
               }
+
               # create log file and u+g=ubuntu
               sudo touch $LOG_FILE
               sudo chown $(whoami):$(whoami) /var/log/script-execution.log
+
               # Boot time into logs
               sudo uptime > $LOG_FILE
+
               # Update package lists
               sudo echo "Running apt update..." | tee -a $LOG_FILE
               sudo apt -y update
               check_exit_status "apt update"
+
               # Upgrade installed packages
               sudo echo "Running apt upgrade..." | tee -a $LOG_FILE
               sudo apt -y upgrade
               check_exit_status "apt upgrade"
+
               # Clone the GitHub repository
               sudo echo "Cloning GitHub repository..." | tee -a $LOG_FILE
-              sudo git clone https://github.com/Vanilla-G/EPA-Dev.git /root/EPA
+              sudo git clone https://github.com/Vanilla-G/EPA-Dev.git /opt/script/EPA
               check_exit_status "clone repo"
+
               # Change permissions of the cloned repository
               sudo echo "Changing permissions of the cloned repository..." | tee -a $LOG_FILE
               sudo chmod -R 755 /root/EPA
               check_exit_status "chmod"
+
               # We Need to run lemp-setup.sh script
               sudo bash /root/EPA/lemp-setup.sh
               EOF
+
   tags = {
     Name = "AWS-EPA-instance"
   }
