@@ -109,7 +109,7 @@ check_exit_status "move mv /home/ubuntu/EPA-Dev-AWS/nginx.conf /etc/nginx/conf.d
 
 DOMAIN=S_DOMAIN
 # Update Nginx config with DNS record
-DNS_RECORD="${SUBDOMAIN}.$(DOMAIN)"
+DNS_RECORD="${SUBDOMAIN}.$DOMAIN"
 sudo echo "Running sed -i DNS_RECORD to nginx.conf..." | tee -a $LOG_FILE
 sudo sed -i "s/SERVERNAME/$DNS_RECORD/g" /etc/nginx/conf.d/nginx.conf
 check_exit_status "sed -i DNS_RECORD to nginx.conf"
