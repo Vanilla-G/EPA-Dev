@@ -69,6 +69,7 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
           echo "Testing SSH connection..."
+          echo "Private key directory ${pwd}
           echo "$SSH_PRIVATE_KEY" > private_key
           chmod 600 private_key
       
@@ -104,7 +105,7 @@ jobs:
           echo "Copying files to VM..."
           echo "Current working directory: ${PWD}"
 
-          scp -r -i private_key -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} "${PWD}/" ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }}:~
+          scp -v -r -i private_key -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} "${PWD}/" ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }}:~
           echo "Files copied successfully."
             
       - name: Run git-setup.sh on the VM
