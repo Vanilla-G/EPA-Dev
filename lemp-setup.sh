@@ -107,9 +107,9 @@ sudo echo "Running mv /root/EPA/nginx.conf /etc/nginx/conf.d/nginx.conf..." | te
 sudo mv /root/EPA/nginx.conf /etc/nginx/conf.d/nginx.conf
 check_exit_status "move mv /root/EPA/nginx.conf /etc/nginx/conf.d/nginx.conf"
 
-
+DOMAIN=S_DOMAIN
 # Update Nginx config with DNS record
-DNS_RECORD="${SUBDOMAIN}.gball.uk"
+DNS_RECORD="${SUBDOMAIN}.$(DOMAIN)"
 sudo echo "Running sed -i DNS_RECORD to nginx.conf..." | tee -a $LOG_FILE
 sudo sed -i "s/SERVERNAME/$DNS_RECORD/g" /etc/nginx/conf.d/nginx.conf
 check_exit_status "sed -i DNS_RECORD to nginx.conf"

@@ -78,5 +78,28 @@ jobs:
           echo "Testing SSH connection to $S_PUBLIC_IP as $SSH_USER on port $SSH_PORT..."
           ssh -vvv -i private_key -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$S_PUBLIC_IP "echo 'SSH Connection Successful'"
   
+      - name: Edit ALL Variables   
+        run: |
+          echo "Secrets to lemp-setup.sh"
+          sed -i 's/S_DOMAIN/${{ secrets.S_DOMAIN }}/g' ./lemp-setup.sh
+          cat ./lemp-setup.sh
+
+          echo "Secrets to cloudflare-dns.sh"
+          sed -i 's/S_DOMAIN/${{ secrets.MY_ELASTIC_IP }}/g' ./cloudflare-dns.sh
+          sed -i 's/S_PUBLIC_IP/${{ secrets.CF_ZONE_ID }}/g' ./cloudflare-dns.sh
+          sed -i 's/S_CF_API/${{ secrets.EMAIL }}/g' ./cloudflare-dns.sh
+          sed -i 's/S_CF_ZONE_ID/${{ secrets.DOMAIN }}/g' ./cloudflare-dns.sh
+          cat ./cloudflare-dns.sh
+
+          echo "Secrets to wordpress-install.sh"
+          cat ./wordpress-install.sh
+
+          echo "Secrets to certbot-ssl-install.sh"
+          sed -i 's/S_DOMAIN/${{ secrets.S_DOMAIM }}/g' ./certbot-ssl-install.sh
+          sed -i 's/S_EMAIL/${{ secrets.S_EMAIL }}/g' ./certbot-ssl-install.sh
+          cat ./certbot-ssl-install.sh
+
+          
+          
 
         
