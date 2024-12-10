@@ -105,7 +105,8 @@ jobs:
           echo "Copying files to VM..."
           echo "Current working directory: ${PWD}"
 
-          scp -v -r -i private_key -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} "${PWD}/" ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }}:~
+          rsync -avz --exclude '.terraform' -e "ssh -i private_key -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} "${PWD}/" ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }}:~
+
           echo "Files copied successfully."
             
       - name: Run git-setup.sh on the VM
