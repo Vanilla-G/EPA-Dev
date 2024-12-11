@@ -189,9 +189,9 @@ resource "aws_lb_listener" "https" {
     target_group_arn = aws_lb_target_group.example.arn
   }
 
-  ssl_certificate {
-    certificate_arn = aws_acm_certificate.example.arn
-  }
+  #ssl_certificate {
+  #  certificate_arn = aws_acm_certificate.example.arn
+  #}
 }
 
 # Register Auto Scaling group with the Load Balancer
