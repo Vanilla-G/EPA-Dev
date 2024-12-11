@@ -20,6 +20,17 @@ resource "aws_vpc" "example" {
   }
 }
 
+resource "aws_subnet" "exampleb" {
+  vpc_id                  = aws_vpc.example.id
+  cidr_block              = "10.0.2.0/24"
+  availability_zone       = "eu-west-2a"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "example-subnet"
+  }
+}
+
 # Subnet Setup
 resource "aws_subnet" "example" {
   vpc_id                  = aws_vpc.example.id
@@ -141,7 +152,7 @@ resource "aws_lb" "example" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.example.id]
-  subnets            = [aws_subnet.example.id]
+  subnets            = [aws_subnet.example.id, aws_subnet.example_b.id]
   
   enable_deletion_protection = false
 
