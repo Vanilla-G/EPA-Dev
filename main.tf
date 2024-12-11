@@ -1,16 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
-
-provider "aws" {
-  region = "eu-west-2"
-}
-
 # VPC Setup
 resource "aws_vpc" "example" {
   cidr_block = "10.0.0.0/16"
@@ -20,18 +7,7 @@ resource "aws_vpc" "example" {
   }
 }
 
-resource "aws_subnet" "exampleb" {
-  vpc_id                  = aws_vpc.example.id
-  cidr_block              = "10.0.2.0/24"
-  availability_zone       = "eu-west-2a"
-  map_public_ip_on_launch = true
-
-  tags = {
-    Name = "example-subnet"
-  }
-}
-
-# Subnet Setup
+# Subnet Setup (Primary subnet in eu-west-2a)
 resource "aws_subnet" "example" {
   vpc_id                  = aws_vpc.example.id
   cidr_block              = "10.0.1.0/24"
@@ -39,15 +15,15 @@ resource "aws_subnet" "example" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "example-subnet"
+    Name = "example-subnet-a"
   }
 }
 
 # Subnet Setup (Secondary subnet in eu-west-2b)
 resource "aws_subnet" "example_b" {
   vpc_id                  = aws_vpc.example.id
-  cidr_block              = "10.0.2.0/24"
-  availability_zone       = "eu-west-2b"  # Second availability zone
+  cidr_block              = "10.0.3.0/24"  # Updated CIDR to avoid conflict
+  availability_zone       = "eu-west-2b"
   map_public_ip_on_launch = true
 
   tags = {
@@ -79,7 +55,7 @@ resource "aws_route_table" "example" {
 }
 
 # Route Table Association
-resource "aws_route_table_association" "examplex" {
+resource "aws_route_table_association" "example" {
   subnet_id      = aws_subnet.example.id
   route_table_id = aws_route_table.example.id
 }
@@ -121,17 +97,6 @@ resource "aws_security_group" "example" {
   }
 }
 
-# EBS Volume
-resource "aws_ebs_volume" "example" {
-  availability_zone = "eu-west-2a"
-  size              = 8
-  type              = "gp2"
-
-  tags = {
-    Name = "example-ebs-volume"
-  }
-}
-
 # EC2 Launch Template
 resource "aws_launch_template" "example" {
   name_prefix   = "example-launch-template"
@@ -139,7 +104,7 @@ resource "aws_launch_template" "example" {
   instance_type = "t2.large"
   key_name      = var.key_name
   security_group_names = [aws_security_group.example.name]
-  
+
   tag_specifications {
     resource_type = "instance"
     tags = {
@@ -148,17 +113,34 @@ resource "aws_launch_template" "example" {
   }
 }
 
-# Create an SSL Certificate using AWS ACM (You can use an existing one if you already have it)
-#resource "aws_acm_certificate" "example" {
-#  domain_name       = "example.com"  # Replace with your domain name
-#  validation_method = "DNS"
+# Auto Scaling Group (ASG)
+resource "aws_autoscaling_group" "example" {
+  desired_capacity     = 2
+  max_size             = 4
+  min_size             = 1
+  vpc_zone_identifier  = [aws_subnet.example.id, aws_subnet.example_b.id]
+  launch_template {
+    id      = aws_launch_template.example.id
+    version = "$Latest"
+  }
 
-#  tags = {
-#    Name = "example-cert"
-#  }
-#}
+  health_check_type          = "EC2"
+  health_check_grace_period  = 300
+  force_delete               = true
+  wait_for_capacity_timeout   = "0"
 
-# Create an Elastic Load Balancer (ALB)
+  tag {
+    key                 = "Name"
+    value               = "example-asg-instance"
+    propagate_at_launch = true
+  }
+
+  lifecycle {
+    ignore_changes = [desired_capacity]
+  }
+}
+
+# ALB Setup
 resource "aws_lb" "example" {
   name               = "example-lb"
   internal           = false
@@ -189,6 +171,11 @@ resource "aws_lb_target_group" "example" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
   }
+
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes        = [name]
+  }
 }
 
 # Create an HTTPS listener for the Load Balancer
@@ -202,80 +189,15 @@ resource "aws_lb_listener" "https" {
     target_group_arn = aws_lb_target_group.example.arn
   }
 
-  #ssl_certificate {
-  #  certificate_arn = aws_acm_certificate.example.arn
-  #}
-}
-
-# Create an HTTP listener with a redirect to HTTPS
-resource "aws_lb_listener" "http" {
-  load_balancer_arn = aws_lb.example.arn
-  port              = "80"
-  protocol          = "HTTP"
-  
-  default_action {
-    type             = "redirect"
-    redirect {
-      protocol   = "HTTPS"
-      port       = "443"
-      status_code = "HTTP_301"
-    }
+  ssl_certificate {
+    certificate_arn = aws_acm_certificate.example.arn
   }
 }
 
 # Register Auto Scaling group with the Load Balancer
 resource "aws_autoscaling_attachment" "example" {
   autoscaling_group_name = aws_autoscaling_group.example.name
-  lb_target_group_arn    = aws_lb_target_group.example.arn
-}
-
-# Auto Scaling Group (ASG)
-resource "aws_autoscaling_group" "example" {
-  desired_capacity     = 2
-  max_size             = 4
-  min_size             = 1
-  vpc_zone_identifier  = [aws_subnet.example.id]
-  launch_template {
-    id      = aws_launch_template.example.id
-    version = "$Latest"
-  }
-
-  health_check_type          = "EC2"
-  health_check_grace_period  = 300
-  force_delete               = true
-  wait_for_capacity_timeout   = "0"
-  
-  load_balancers = [aws_lb.example.id]  # Attach the Load Balancer
-  
-  tag {
-    key                 = "Name"
-    value               = "example-asg-instance"
-    propagate_at_launch = true
-  }
-
-  lifecycle {
-    ignore_changes = [desired_capacity]
-  }
-}
-
-# Auto Scaling Policy for Scaling Up
-resource "aws_autoscaling_policy" "scale_up" {
-  name                   = "scale_up_policy"
-  scaling_adjustment     = 1
-  adjustment_type        = "ChangeInCapacity"
-  cooldown               = 300
-  estimated_instance_warmup = 300
-  autoscaling_group_name = aws_autoscaling_group.example.name
-}
-
-# Auto Scaling Policy for Scaling Down
-resource "aws_autoscaling_policy" "scale_down" {
-  name                   = "scale_down_policy"
-  scaling_adjustment     = -1
-  adjustment_type        = "ChangeInCapacity"
-  cooldown               = 300
-  estimated_instance_warmup = 300
-  autoscaling_group_name = aws_autoscaling_group.example.name
+  lb_target_group_arn  = aws_lb_target_group.example.arn
 }
 
 variable "key_name" {
