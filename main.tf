@@ -43,6 +43,18 @@ resource "aws_subnet" "example" {
   }
 }
 
+# Subnet Setup (Secondary subnet in eu-west-2b)
+resource "aws_subnet" "example_b" {
+  vpc_id                  = aws_vpc.example.id
+  cidr_block              = "10.0.2.0/24"
+  availability_zone       = "eu-west-2b"  # Second availability zone
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "example-subnet-b"
+  }
+}
+
 # Internet Gateway Setup
 resource "aws_internet_gateway" "example" {
   vpc_id = aws_vpc.example.id
