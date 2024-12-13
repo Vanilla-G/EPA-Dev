@@ -15,15 +15,15 @@ provider "aws" {
 data "aws_vpc" "dbs" {
   filter {
     name   = "tag:Name"
-    values = ["dbs"]  # Replace with your actual VPC name if different
+    values = ["dbs"]  # Replace VPC name if different
   }
 }
 
-# Create a subnet in a specific Availability Zone (eu-west-2a)
+# Create a subnet in Availability Zone eu-west-2a
 resource "aws_subnet" "example_subnet" {
   vpc_id                  = data.aws_vpc.dbs.id
-  cidr_block              = "10.0.1.0/24"  # Replace with your desired CIDR block
-  availability_zone       = "eu-west-2a"   # Subnet in EU-West-2A
+  cidr_block              = "172.30.3.0/24"  # New CIDR block in eu-west-2a (replace with unused CIDR)
+  availability_zone       = "eu-west-2a"     # Same AZ as your RDS instance
 
   map_public_ip_on_launch = true  # Optional: assign public IPs on instance launch
 
@@ -39,7 +39,8 @@ resource "aws_instance" "example" {
   subnet_id     = aws_subnet.example_subnet.id  # Use the subnet created in eu-west-2a
   key_name      = var.key_name
 
-  vpc_security_group_ids = ["sg-xxxxxxxx"]  # Replace with your actual security group ID
+  # No security group defined; ill assign it manually outside Terraform
+  vpc_security_group_ids = []  # Leave empty for manual assignment
 
   tags = {
     Name = "AWS-EPA-instance"
