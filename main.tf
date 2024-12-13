@@ -42,6 +42,12 @@ resource "aws_instance" "example" {
   }
 }
 
+variable "key_name" {
+  description = "The key pair to use for the instance"
+  type        = string
+  
+}
+
 # Elastic IP Association (if required)
 resource "aws_eip_association" "eip_assoc" {
   instance_id   = aws_instance.example.id
@@ -53,23 +59,4 @@ data "aws_eip" "existing" {
   id = "eipalloc-0ccc13405e62ed638"  # The Elastic IP you want to use
 }
 
-# Security Group Example (if needed)
-resource "aws_security_group" "example" {
-  name        = "example-security-group"
-  description = "Allow inbound traffic"
-  vpc_id      = data.aws_vpc.dbs.id
 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
