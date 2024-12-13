@@ -22,7 +22,7 @@ data "aws_vpc" "dbs" {
 # Create a subnet in Availability Zone eu-west-2a
 resource "aws_subnet" "example_subnet" {
   vpc_id                  = data.aws_vpc.dbs.id
-  cidr_block              = "172.30.3.0/24"  # New CIDR block in eu-west-2a (replace with unused CIDR)
+  cidr_block              = "172.30.4.0/24"  # New CIDR block in eu-west-2a (replace with unused CIDR)
   availability_zone       = "eu-west-2a"     # Same AZ as your RDS instance
 
   map_public_ip_on_launch = true  # Optional: assign public IPs on instance launch
