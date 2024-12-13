@@ -19,23 +19,27 @@ data "aws_vpc" "dbs" {
   }
 }
 
-# Reference a subnet within that VPC by name (assuming you know its tag or another attribute)
-data "aws_subnet" "example_subnet" {
-  filter {
-    name   = "tag:Name"
-    values = ["dbs"]  # Replace with your actual subnet name
+# Create a subnet in a specific Availability Zone (eu-west-2a)
+resource "aws_subnet" "example_subnet" {
+  vpc_id                  = data.aws_vpc.dbs.id
+  cidr_block              = "10.0.1.0/24"  # Replace with your desired CIDR block
+  availability_zone       = "eu-west-2a"   # Subnet in EU-West-2A
+
+  map_public_ip_on_launch = true  # Optional: assign public IPs on instance launch
+
+  tags = {
+    Name = "example-subnet"
   }
-  vpc_id = data.aws_vpc.dbs.id  # Ensures it matches the dbs VPC
 }
 
-# EC2 instance setup with a referenced subnet and security group
+# EC2 instance setup with the referenced subnet in eu-west-2a
 resource "aws_instance" "example" {
   ami           = "ami-0e8d228ad90af673b"  # Replace with the appropriate AMI ID
   instance_type = "t2.large"
-  subnet_id     = data.aws_subnet.example_subnet.id  # Use the referenced subnet ID
+  subnet_id     = aws_subnet.example_subnet.id  # Use the subnet created in eu-west-2a
   key_name      = var.key_name
 
-  vpc_security_group_ids = ["sg-029b358b17663657b"]  # Replace with your actual security group ID
+  vpc_security_group_ids = ["sg-xxxxxxxx"]  # Replace with your actual security group ID
 
   tags = {
     Name = "AWS-EPA-instance"
@@ -45,7 +49,6 @@ resource "aws_instance" "example" {
 variable "key_name" {
   description = "The key pair to use for the instance"
   type        = string
-  
 }
 
 # Elastic IP Association (if required)
@@ -58,5 +61,3 @@ resource "aws_eip_association" "eip_assoc" {
 data "aws_eip" "existing" {
   id = "eipalloc-0ccc13405e62ed638"  # The Elastic IP you want to use
 }
-
-
