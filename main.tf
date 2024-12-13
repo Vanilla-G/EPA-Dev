@@ -23,7 +23,7 @@ data "aws_vpc" "dbs" {
 data "aws_subnet" "example_subnet" {
   filter {
     name   = "tag:Name"
-    values = ["subnet-name"]  # Replace with your actual subnet name
+    values = ["dbs]  # Replace with your actual subnet name
   }
   vpc_id = data.aws_vpc.dbs.id  # Ensures it matches the dbs VPC
 }
