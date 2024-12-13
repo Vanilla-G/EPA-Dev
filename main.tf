@@ -32,6 +32,26 @@ resource "aws_subnet" "example_subnet" {
   }
 }
 
+# Create a security group allowing SSH access
+resource "aws_security_group" "EC2-SG" {
+  name        = "EC2-sg"
+  description = "Allow SSH inbound traffic"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Allow SSH from anywhere; for security, restrict to your IP
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 # EC2 instance setup with the referenced subnet in eu-west-2a
 resource "aws_instance" "example" {
   ami           = "ami-0e8d228ad90af673b"  # Replace with the appropriate AMI ID
@@ -39,8 +59,8 @@ resource "aws_instance" "example" {
   subnet_id     = aws_subnet.example_subnet.id  # Use the subnet created in eu-west-2a
   key_name      = var.key_name
 
-  # No security group defined; ill assign it manually outside Terraform
-  vpc_security_group_ids = []  # Leave empty for manual assignment
+  # Associate the security group
+  vpc_security_group_ids = [aws_security_group.EC2-SG.id]
 
   tags = {
     Name = "AWS-EPA-instance"
