@@ -1,7 +1,8 @@
 #!/bin/bash
 
 rds_endpoint=S_DB_ENDPOINT
-db_username=S_DB_NAME
+db_name=S_DB_NAME
+db_username=S_DB_USER
 db_password='S_DB_PASSWORD'
 
 
@@ -31,7 +32,7 @@ sudo chown -R www-data:www-data /var/www/html/
 
 sudo sed -i "s/password_here/$db_password/g" /var/www/html/wp-config.php
 sudo sed -i "s/username_here/$db_username/g" /var/www/html/wp-config.php
-sudo sed -i "s/database_name_here/$db_username/g" /var/www/html/wp-config.php
+sudo sed -i "s/database_name_here/$db_name/g" /var/www/html/wp-config.php
 sudo sed -i "s/localhost/$rds_endpoint/g" /var/www/html/wp-config.php
 
 SALT=$(curl -L https://api.wordpress.org/secret-key/1.1/salt/)
