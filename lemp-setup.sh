@@ -63,18 +63,19 @@ sudo systemctl status nginx >> /var/log/script-execution.log
 
 # Install MariaDB
 sudo echo "Running install mariadb..." | tee -a $LOG_FILE
-sudo apt install mariadb-server -y
+#sudo apt install mariadb-server -y
+sudo apt -y install unzip wget mariadb-client
 check_exit_status "apt install mariadb"
 
 
 # Start and enable MariaDB
-sudo echo "Running start mariadb and systemctl enable mariadb..." | tee -a $LOG_FILE
-sudo systemctl start mariadb && sudo systemctl enable mariadb
-check_exit_status "start and enable mariadb"
+#sudo echo "Running start mariadb and systemctl enable mariadb..." | tee -a $LOG_FILE
+#sudo systemctl start mariadb && sudo systemctl enable mariadb
+#check_exit_status "start and enable mariadb"
 
 
 # Append MariaDB status to log
-systemctl status mariadb >> /var/log/script-execution.log
+mariadb --version >> /var/log/script-execution.log
 
 # Install PHP and extensions
 sudo echo "Running install php..." | tee -a $LOG_FILE
@@ -95,9 +96,9 @@ sudo systemctl disable apache2
 check_exit_status "disable apache2"
 
 
-sudo echo "Runniung mv /var/www/html/index.html /var/www/html/index.html.old..." | tee -a $LOG_FILE
-sudo mv /var/www/html/index.html /var/www/html/index.html.old
-check_exit_status "move /var/www/html/index.html"
+#sudo echo "Runniung mv /var/www/html/index.html /var/www/html/index.html.old..." | tee -a $LOG_FILE
+#sudo mv /var/www/html/index.html /var/www/html/index.html.old
+#check_exit_status "move /var/www/html/index.html"
 
 
 
