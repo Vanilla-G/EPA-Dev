@@ -61,6 +61,8 @@ jobs:
           sed -i 's/S_DB_ENDPOINT/${{ secrets.S_DB_ENDPOINT }}/g' ./wordpress-install.sh
           sed -i 's/S_DB_NAME/${{ secrets.S_DB_NAME }}/g' ./wordpress-install.sh
           sed -i 's/S_DB_PASSWORD/${{ secrets.S_DB_PASSWORD }}/g' ./wordpress-install.sh
+          sed -i 's/S_DB_USER/${{ secrets.S_DB_USER }}/g' ./wordpress-install.sh
+
           cat ./wordpress-install.sh
 
           echo "Secrets to certbot-ssl-install.sh"
