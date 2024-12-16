@@ -2,7 +2,7 @@
 
 rds_endpoint=S_DB_ENDPOINT
 db_username=S_DB_NAME
-db_password=S_DB_PASSWORD
+db_password='S_DB_PASSWORD'
 
 
 sudo rm -rf /var/www/html
