@@ -5,7 +5,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t2.micro
-      ImageId: ami-0e2c8caa4b6378d8c
+      ImageId: ami-05c172c7f0d3aed00
       KeyName: githubactions
       SecurityGroupIds:
         - sg-0e78abc49a200c373
