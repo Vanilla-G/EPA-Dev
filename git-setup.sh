@@ -22,7 +22,7 @@ sudo chown $(whoami):$(whoami) /var/log/script-execution.log
 
 
 # Server boot time into logs
-sudo uptime > $LOG_FILE
+sudo uptime | sudo tee $LOG_FILE
 
 # Update package lists
 sudo echo "Running apt update..." | tee -a $LOG_FILE
