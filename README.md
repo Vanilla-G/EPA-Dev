@@ -124,52 +124,58 @@ Objectives:
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+# Getting Started  
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Welcome to **From Code to Cloud: Rise of the LEMPire - DevOps EPA-Dev**! This guide will help you set up your project locally and deploy a scalable, secure WordPress-based e-commerce website on the LEMP stack using AWS. Follow these steps to get started quickly.  
 
-### Prerequisites
+---
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+## Prerequisites  
 
-### Installation
+Ensure you have the following installed and configured before proceeding:  
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/Vanilla-G/EPA-Dev.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-5. Change git remote url to avoid accidental pushes to base project
-   ```sh
-   git remote set-url origin Vanilla-G/EPA-Dev
-   git remote -v # confirm the changes
-   ```
+### Required Tools  
+- **Terraform**: Infrastructure provisioning and management  
+  - [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)  
+- **AWS CLI**: Interact with AWS services  
+  - [Install AWS CLI](https://aws.amazon.com/cli/)  
+- **Nginx**: Web server for hosting  
+  - [Install Nginx](https://nginx.org/en/docs/install.html)  
+- **Certbot**: SSL certificate management  
+  - [Install Certbot](https://certbot.eff.org/)  
+- **Docker (Optional)**: For local testing of services  
+  - [Install Docker](https://docs.docker.com/get-docker/)  
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Ensure your AWS IAM account has sufficient permissions for deploying resources via Terraform.  
 
+---
 
+## Installation  
 
-<!-- USAGE EXAMPLES -->
-## Usage
+Follow these steps to clone, set up, and configure the project:  
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+1. **Clone the Repository**  
+   ```bash  
+   git clone https://github.com/Vanilla-G/EPA-Dev.git  
+   cd EPA-Dev  
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Usage  
+
+Explore the deployed site to see the scalable WordPress-based e-commerce website for protein products in action.  
+
+### Examples of Features  
+- Fully deployed **LEMP stack** with optimized **Cloudflare caching**  
+- Automated **CI/CD pipelines** for continuous integration and deployment  
+- **SSL-secured communications** with Certbot  
+
+### Monitoring and Alerts  
+- **Grafana dashboards** and **Uptime Kuma** provide comprehensive monitoring and alerting for infrastructure and application health.  
+
+For detailed usage instructions, refer to the [Documentation](#).  
 
 
 
