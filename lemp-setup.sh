@@ -59,7 +59,7 @@ check_exit_status "start and enable nginx"
 
 
 # Save Nginx status to log
-sudo systemctl status nginx >> /var/log/script-execution.log
+sudo systemctl status nginx | sudo tee -a /var/log/script-execution.log
 
 # Install MariaDB
 sudo echo "Running install mariadb..." | tee -a $LOG_FILE
