@@ -84,7 +84,7 @@ check_exit_status "apt install php"
 
 
 # Append PHP version to log
-sudo php -v >> /var/log/script-execution.log
+sudo php -v | sudo tee -a /var/log/script-execution.log
 
 # Stop apache2
 sudo echo "Running stop apache2..." | tee -a $LOG_FILE
