@@ -31,7 +31,7 @@ sudo chmod 640 /var/www/html/wp-config.php
 sudo chown -R www-data:www-data /var/www/html/
 
 #connect to rds with credentials usrname password and endpoint 
-mysql -h $rds_edpoint -u $db_username -p$db_password -e "CREATE DATABASE IF NOT EXISTS $db_username;"
+mysql -h $rds_endpoint -u $db_username -p$db_password -e "CREATE DATABASE IF NOT EXISTS $db_username;"
 
 
 sudo sed -i "s/password_here/$db_password/g" /var/www/html/wp-config.php
