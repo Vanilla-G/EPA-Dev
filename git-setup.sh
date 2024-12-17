@@ -18,7 +18,7 @@ check_exit_status() {
 
 # Different Cloud Providers hae different default usernames, using whoami to address this
 sudo touch $LOG_FILE
-sudo chown $(whoami):$(whoami) /var/log/script-execution.log
+sudo chown "$(whoami)":"$(whoami)" /var/log/script-execution.log
 
 
 # Server boot time into logs
