@@ -117,7 +117,7 @@ check_exit_status "sed -i DNS_RECORD to nginx.conf"
 
 
 # Test and reload Nginx
-sudo nginx -t >> /var/log/script-execution.log 
+sudo nginx -t | sudo tee -a /var/log/script-execution.log
 
 sudo echo "Running reload nginx..." | tee -a $LOG_FILE
 sudo systemctl reload nginx
