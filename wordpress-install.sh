@@ -30,6 +30,10 @@ sudo mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
 sudo chmod 640 /var/www/html/wp-config.php 
 sudo chown -R www-data:www-data /var/www/html/
 
+#connect to rds with credentials usrname password and endpoint 
+mysql -h $rds_edpoint -u $db_username -p$db_password -e "CREATE DATABASE IF NOT EXISTS $db_username;"
+
+
 sudo sed -i "s/password_here/$db_password/g" /var/www/html/wp-config.php
 sudo sed -i "s/username_here/$db_username/g" /var/www/html/wp-config.php
 sudo sed -i "s/database_name_here/$db_username/g" /var/www/html/wp-config.php
@@ -38,7 +42,6 @@ sudo sed -i "s/localhost/$rds_endpoint/g" /var/www/html/wp-config.php
 SALT=$(curl -L https://api.wordpress.org/secret-key/1.1/salt/)
 STRING='put your unique phrase here'
 printf '%s\n' "g/$STRING/d" a "$SALT" . w | ed -s /var/www/html/wp-config.php
-
 
 
 echo "Wordpress installation complete" >> /var/log/script-execution.log
