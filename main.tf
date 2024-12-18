@@ -6,7 +6,7 @@ resource "aws_instance" "my_ec2_instance" {
   ami           = "ami-05c172c7f0d3aed00"
   instance_type = "t2.micro"
   key_name      = "githubactions"
-  subnet_id     = aws_subnet.selected_subnet.id
+  subnet_id     = data.aws_subnet.selected_subnet.id  # Correct reference to data source
 
   vpc_security_group_ids = [
     "sg-0e78abc49a200c373"
@@ -17,13 +17,13 @@ resource "aws_instance" "my_ec2_instance" {
   }
 }
 
-# Dynamically fetch a subnet from the specified VPC
-data "aws_subnet_ids" "available" {
-  vpc_id = "vpc-0ef3faf243858d782"
+# Fetch subnets from the specified VPC
+data "aws_subnets" "available" {
+  vpc_id = "vpc-0ef3faf243858d782"  # Correct data source
 }
 
 data "aws_subnet" "selected_subnet" {
-  id = data.aws_subnet_ids.available.ids[0] # Select the first available subnet
+  id = data.aws_subnets.available.ids[0]  # Select the first available subnet
 }
 
 # Elastic IP Association (if required)
