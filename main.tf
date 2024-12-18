@@ -18,19 +18,19 @@ resource "aws_instance" "my_ec2_instance" {
   }
 }
 
-# Fetch a subnet in the specified VPC using filtering
+# Fetch a subnet in the specified VPC and availability zone
 data "aws_subnet" "selected_subnet" {
   filter {
     name   = "vpc-id"
     values = ["vpc-0ef3faf243858d782"]  # Specify the VPC ID
   }
 
-  # Optionally filter by availability zone or other criteria if needed
-  # filter {
-  #   name   = "availability-zone"
-  #   values = ["eu-west-2a"]
-  # }
+  filter {
+    name   = "availability-zone"
+    values = ["eu-west-2b"]  # Specify the desired availability zone
+  }
 }
+
 
 # Elastic IP Association (if required)
 resource "aws_eip_association" "eip_assoc" {
