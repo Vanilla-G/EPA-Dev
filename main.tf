@@ -18,14 +18,18 @@ resource "aws_instance" "my_ec2_instance" {
   }
 }
 
-# Fetch subnet IDs from the specified VPC
-data "aws_subnet_ids" "available" {
-  vpc_id = "vpc-0ef3faf243858d782"  # Specify the VPC ID
-}
-
-# Selecting a specific subnet from the list of available subnets
+# Fetch a subnet in the specified VPC using filtering
 data "aws_subnet" "selected_subnet" {
-  id = data.aws_subnet_ids.available.ids[0]  # Selecting the first available subnet from the list
+  filter {
+    name   = "vpc-id"
+    values = ["vpc-0ef3faf243858d782"]  # Specify the VPC ID
+  }
+
+  # Optionally filter by availability zone or other criteria if needed
+  # filter {
+  #   name   = "availability-zone"
+  #   values = ["eu-west-2a"]
+  # }
 }
 
 # Elastic IP Association (if required)
