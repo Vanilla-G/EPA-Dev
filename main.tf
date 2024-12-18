@@ -18,14 +18,14 @@ resource "aws_instance" "my_ec2_instance" {
   }
 }
 
-# Fetch subnets from the specified VPC
-data "aws_subnets" "available" {
-  vpc_id = "vpc-0ef3faf243858d782"  # Correct data source to fetch all subnets
+# Fetch subnet IDs from the specified VPC
+data "aws_subnet_ids" "available" {
+  vpc_id = "vpc-0ef3faf243858d782"  # Specify the VPC ID
 }
 
 # Selecting a specific subnet from the list of available subnets
 data "aws_subnet" "selected_subnet" {
-  id = data.aws_subnets.available.ids[0]  # Selecting the first available subnet from the list
+  id = data.aws_subnet_ids.available.ids[0]  # Selecting the first available subnet from the list
 }
 
 # Elastic IP Association (if required)
