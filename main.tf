@@ -7,7 +7,7 @@ resource "aws_instance" "my_ec2_instance" {
   ami           = "ami-05c172c7f0d3aed00"
   instance_type = "t2.micro"
   key_name      = "githubactions"
-  subnet_id     = data.aws_subnet.selected_subnet.id  # Correct reference to the data source
+  subnet_id     = "subnet-01bb4c11f1b39318e"  # Directly using your specific Subnet ID
 
   vpc_security_group_ids = [
     "sg-0e78abc49a200c373"
@@ -17,20 +17,6 @@ resource "aws_instance" "my_ec2_instance" {
     Name = "EPA-AWS"
   }
 }
-
-# Fetch a subnet in the specified VPC and availability zone
-data "aws_subnet" "selected_subnet" {
-  filter {
-    name   = "vpc-id"
-    values = ["vpc-0ef3faf243858d782"]  # Specify the VPC ID
-  }
-
-  filter {
-    name   = "availability-zone"
-    values = ["eu-west-2b"]  # Specify the desired availability zone
-  }
-}
-
 
 # Elastic IP Association (if required)
 resource "aws_eip_association" "eip_assoc" {
