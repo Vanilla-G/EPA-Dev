@@ -159,13 +159,57 @@ Follow these steps to clone, set up, and configure the project:
    git clone https://github.com/Vanilla-G/EPA-Dev.git  
    cd EPA-Dev  
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+2. **Install GoTop a real-time, top-like interface for monitoring system resources**  
+   ```bash  
+   sudo snap install gotop
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Usage  
+3. **Install Stress a command-line tool available in Linux to test the performance and reliability of computer systems**  
+   ```bash  
+   sudo apt install stress
 
-Explore the deployed site to see the scalable WordPress-based e-commerce website for protein products in action.  
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+4. **CPU Stress Test** Run a stress test on the single vCPU for 30 seconds (suitable for free tier t2.micros)
+   ```bash  
+   stress --cpu 1 --timeout 30
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+5. **Memory Stress Test**  Run a memory stress test using 512MB of RAM for 30 seconds:
+   ```bash  
+   stress --vm 1 --vm-bytes 512M --timeout 30
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+6. **Mixed Stress Test (CPU + Memory)**  To stress both CPU and memory simultaneously
+   ```bash  
+   stress --cpu 1 --vm 1 --vm-bytes 512M --timeout 30
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+7. **I/O Stress Test**   This creates a single I/O worker to read/write to disk for 30 seconds.
+   ```bash  
+   stress --io 1 --timeout 30
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+8. **Combined Stress Test**  To simulate a more comprehensive load, run:
+   ```bash  
+   stress --cpu 1 --vm 1 --vm-bytes 512M --io 1 --timeout 30
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+_For more examples, please refer to the [Documentation](https://example.com)_
+
+
+## Usage  
+For testing purposes only Stress can be used in conjunction with GoTop
+
+Explore the deployed site to see the WordPress-based e-commerce website for in action.  
 
 ### Examples of Features  
 - Fully deployed **LEMP stack** with optimized **Cloudflare caching**  
