@@ -1,4 +1,4 @@
-name: Deploy LEMP
+name: Deploy LEMP stack
 
 on:
   push:
