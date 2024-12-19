@@ -112,6 +112,23 @@ jobs:
           echo "Running wordpress-install.sh on VM..."
           ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA-Dev-AWS/wordpress-install.sh || { echo "Script failed"; exit 1; }'
           echo "Script executed successfully."
+
+      - name: Test LEMP Stack Components (Nginx, MySQL, PHP)
+        run: |
+          echo "Testing LEMP stack components..."
+
+          # Test if Nginx is running
+          echo "Testing Nginx..."
+          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} "systemctl is-active --quiet nginx && echo 'Nginx is running' || echo 'Nginx is not running'"
+          
+          # Test if MySQL/MariaDB is running
+          echo "Testing MySQL/MariaDB..."
+          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} "systemctl is-active --quiet mysql && echo 'MySQL is running' || echo 'MySQL is not running'"
+
+          # Test if PHP is installed and running
+          echo "Testing PHP..."
+          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} "php -v || echo 'PHP is not installed'"
+
     
       - name: Run certbot-ssl-install.sh on the VM
         run: |
