@@ -13,16 +13,12 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Check Required Secrets
+      - name: Check Required Cloudflare Secrets
         run: |
-         if [[ -z "$S_DOMAIN" || -z "$S_PUBLIC_IP" || -z "$S_CF_API" || -z "$S_CF_ZONE_ID" || \
-          -z "$SSH_PRIVATE_KEY" || -z "$SSH_USER" || -z "$SSH_PORT" || \
-          -z "$S_DB_ENDPOINT" || -z "$S_DB_NAME" || -z "$S_DB_PASSWORD" || -z "$S_DB_USER" || \
-          -z "$S_EMAIL" ]]; then
-          echo "\e[31mOne or more required secrets Missing\e[0m" >&2
+         if [[ -z "$S_DOMAIN" || -z "$S_PUBLIC_IP" || -z "$S_CF_API" || -z "$S_CF_ZONE_ID" ]]; then
+          echo -e "\e[31mOne or more required Cloudflare secrets are missing\e[0m" >&2
           exit 1
          fi
-
 
       - name: Set Cloudflare Environment Variables
         env:
