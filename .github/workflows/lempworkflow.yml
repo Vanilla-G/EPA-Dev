@@ -15,25 +15,15 @@ jobs:
 
       - name: Check Required Secrets
         run: |
-         missing_secrets=0
-         missing_vars=()
-
-         for var in S_DOMAIN S_PUBLIC_IP S_CF_API S_CF_ZONE_ID SSH_PRIVATE_KEY SSH_USER SSH_PORT \
-          S_DB_ENDPOINT S_DB_NAME S_DB_PASSWORD S_DB_USER S_EMAIL; do
-          if [[ -z "${!var}" ]]; then
-           missing_vars+=("$var")
-           missing_secrets=1
-          fi
-         done
-
-         if [[ $missing_secrets -ne 0 ]]; then
-          echo -e "\e[31mOne or more required secrets are missing:\e[0m"
-           for secret in "${missing_vars[@]}"; do
-           echo -e "\e[31mMissing secret: $secret\e[0m"
-           done
+         if [[ -z "$S_DOMAIN" || -z "$S_PUBLIC_IP" || -z "$S_CF_API" || -z "$S_CF_ZONE_ID" || \
+          -z "$SSH_PRIVATE_KEY" || -z "$SSH_USER" || -z "$SSH_PORT" || \
+          -z "$S_DB_ENDPOINT" || -z "$S_DB_NAME" || -z "$S_DB_PASSWORD" || -z "$S_DB_USER" || \
+          -z "$S_EMAIL" ]]; then
+          echo "\e[31mOne or more required secrets Missing\e[0m" >&2
           exit 1
          fi
-         
+
+
       - name: Set Cloudflare Environment Variables
         env:
           S_DOMAIN: ${{ secrets.S_DOMAIN }}
