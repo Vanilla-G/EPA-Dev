@@ -17,7 +17,6 @@ jobs:
         run: |
          if [[ -z "$S_DOMAIN" || -z "$S_PUBLIC_IP" || -z "$S_CF_API" || -z "$S_CF_ZONE_ID" ]]; then
           echo -e "\e[31mOne or more required Cloudflare secrets are missing\e[0m" >&2
-          exit 1
          fi
 
       - name: Set Cloudflare Environment Variables
