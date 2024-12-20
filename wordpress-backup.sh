@@ -14,44 +14,52 @@ rds_endpoint=S_RDS_ENDPOINT       # The endpoint for your AWS RDS instance (set 
 db_username=S_DB_USER            # The database username used to connect to the RDS instance
 dbpassword=S_DB_PASSWORD         # The password for the database user
 
-#Create a database dump using mysqldump to backup the WordPress database
+# Step 1: Create a database dump using mysqldump to backup the WordPress database
 echo "Creating database dump..."  
-sudo mysqldump -h "$rds_endpoint" -u "$db_username" -p"$db_password" "$db_username" > wordpress-db-dump.sql
-if [ $? -ne 0 ]; then
-  # If mysqldump fails (e.g., due to incorrect credentials or connection issues), the script will terminate and show an error message
+if ! sudo mysqldump -h "$rds_endpoint" -u "$db_username" -p"$db_password" "$db_username" | sudo tee wordpress-db-dump.sql; then
+  # If mysqldump fails, the script will terminate and show an error message
   echo "Error: Database dump failed." >&2
   exit 1
 fi
-echo "Database dump created successfully."  # If the dump succeeds, display a confirmation message
+echo "Database dump created successfully."  # Confirmation message if the dump is created successfully
 
-#Clone the specified repository to a temporary directory for backup
+# Step 2: Clone the specified repository to a temporary directory for backup
 echo "Cloning the repository..."  
 rm -rf "$working_dir"  # Delete any previous backup in the working directory to ensure a clean start
-git clone "$repo_url" "$working_dir"  # Clone the repository from GitHub into the working directory
-if [ $? -ne 0 ]; then
-  # If git cloning fails (e.g., due to authentication or URL issues), the script will terminate and show an error message
+if ! git clone "$repo_url" "$working_dir"; then
+  # If git cloning fails, the script will terminate and show an error message
   echo "Error: Failed to clone the repository." >&2
   exit 1
 fi
-echo "Repository cloned successfully."  # If cloning succeeds, display a confirmation message
+echo "Repository cloned successfully."  # Confirmation message if cloning succeeds
 
-#Copy the WordPress content and database dump into the cloned repository
+# Step 3: Copy the WordPress content and database dump into the cloned repository
 echo "Adding database dump and web content to the repository..."
-sudo cp wordpress-db-dump.sql "$working_dir/"  # Copy the SQL dump file into the working directory (GitHub repository)
-sudo cp -r /var/www/html/* "$working_dir/"     # Copy all files from the WordPress site's root directory into the working directory
-if [ $? -ne 0 ]; then
-  # If copying the files fails (e.g., due to permission issues), the script will terminate and show an error message
-  echo "Error: Failed to copy files." >&2
+if ! sudo cp wordpress-db-dump.sql "$working_dir/"; then
+  # If copying the SQL dump fails, the script will terminate and show an error message
+  echo "Error: Failed to copy database dump." >&2
+  exit 1
+fi
+if ! sudo cp -r /var/www/html/* "$working_dir/"; then
+  # If copying the WordPress files fails, the script will terminate and show an error message
+  echo "Error: Failed to copy WordPress files." >&2
   exit 1
 fi
 
-#Commit and push the changes (new files) to the GitHub repository
+# Step 4: Commit and push the changes (new files) to the GitHub repository
 cd "$working_dir" || exit  # Change to the working directory, exit if directory is not found
-git add .  # Stage all new and modified files to be included in the commit
-git commit -m "Automated backup: $(date +'%Y-%m-%d %H:%M:%S')"  # Commit the changes with a message including the timestamp
-git push origin main  # Push the commit to the 'main' branch of the repository
-if [ $? -ne 0 ]; then
-  # If git push fails (e.g., due to authentication or network issues), the script will terminate and show an error message
+if ! git add .; then
+  # If adding files to git fails, the script will terminate and show an error message
+  echo "Error: Failed to add files to git." >&2
+  exit 1
+fi
+if ! git commit -m "Automated backup: $(date +'%Y-%m-%d %H:%M:%S')"; then
+  # If commit fails, the script will terminate and show an error message
+  echo "Error: Failed to commit changes." >&2
+  exit 1
+fi
+if ! git push origin main; then
+  # If git push fails, the script will terminate and show an error message
   echo "Error: Failed to push changes to the repository." >&2
   exit 1
 fi
