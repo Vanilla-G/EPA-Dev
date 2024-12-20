@@ -7,7 +7,7 @@ working_dir="/tmp/epa-dev-restore"   # Temporary directory to clone the reposito
 repo_url=S_REPO_URL               # GitHub repository URL for restoring the files (should be defined before running the script)
 
 # Define RDS and database credentials for database import
-rds_endpoint=S_RDS_ENDPOINT       # The endpoint for your AWS RDS instance
+rds_endpoint=S_DB_ENDPOINT       # The endpoint for your AWS RDS instance
 db_username=S_DB_USER            # The database username to connect to the RDS instance
 dbpassword=S_DB_PASSWORD         # The password for the database user
 
