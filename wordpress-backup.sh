@@ -10,7 +10,7 @@ working_dir="/tmp/epa-dev-backup"   # Temporary directory for repository clone a
 repo_url=S_REPO_URL               # GitHub repository URL where files will be uploaded (should be defined before running the script)
 
 # Define RDS and database credentials for database export
-rds_endpoint=S_RDS_ENDPOINT       # The endpoint for your AWS RDS instance (set as an environment variable or directly in the script)
+rds_endpoint=S_DB_ENDPOINT       # The endpoint for your AWS RDS instance (set as an environment variable or directly in the script)
 db_username=S_DB_USER            # The database username used to connect to the RDS instance
 dbpassword=S_DB_PASSWORD         # The password for the database user
 
