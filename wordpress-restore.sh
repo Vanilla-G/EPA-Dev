@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Set up necessary variables for authentication and configuration
-#gittoken=GH_TOKEN                # GitHub Personal Access Token (securely stored)
-#gitusername=GH_USERNAME          # GitHub Username (securely stored)
+gittoken=GH_TOKEN                # GitHub Personal Access Token (securely stored)
+gitusername=GH_USERNAME          # GitHub Username (securely stored)
 working_dir="/tmp/epa-dev-restore"   # Temporary directory to clone the repository into
 repo_url=S_REPO_URL               # GitHub repository URL for restoring the files (should be defined before running the script)
 
