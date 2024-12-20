@@ -2,8 +2,8 @@
 
 # Set up necessary variables for authentication and configuration
 
-#gittoken=GH_TOKEN                # GitHub Personal Access Token used for authentication with GitHub (should be securely stored in environment)
-#gitusername=GH_USERNAME          # GitHub Username (also stored securely, such as in environment variables)
+gittoken=GH_TOKEN                # GitHub Personal Access Token used for authentication with GitHub (should be securely stored in environment)
+gitusername=GH_USERNAME          # GitHub Username (also stored securely, such as in environment variables)
 
 # Define the working directory where the repository will be cloned
 working_dir="/tmp/epa-dev-backup"   # Temporary directory for repository clone and backup files
