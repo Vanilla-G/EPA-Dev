@@ -12,7 +12,7 @@ repo_url=S_REPO_URL               # GitHub repository URL where files will be up
 # Define RDS and database credentials for database export
 rds_endpoint=S_DB_ENDPOINT       # The endpoint for your AWS RDS instance (set as an environment variable or directly in the script)
 db_username=S_DB_USER            # The database username used to connect to the RDS instance
-dbpassword=S_DB_PASSWORD         # The password for the database user
+db_password=S_DB_PASSWORD         # The password for the database user
 
 # Step 1: Create a database dump using mysqldump to backup the WordPress database
 echo "Creating database dump..."  
