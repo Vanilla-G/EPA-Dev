@@ -23,7 +23,7 @@ echo "Repository cloned successfully."  # Confirmation message if cloning succee
 
 # Step 2: Copy the WordPress files from the repository to /var/www/html
 echo "Restoring WordPress content to /var/www/html..."
-if ! sudo cp -r "$working_dir/html"/* /var/www/html/; then
+if ! sudo cp -r "$working_dir"/* /var/www/html/; then
   # If copying the WordPress files fails, the script will terminate and show an error message
   echo "Error: Failed to copy WordPress files to /var/www/html." >&2
   exit 1
