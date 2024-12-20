@@ -85,7 +85,7 @@ jobs:
           echo "Secrets to wordpress-backup.sh"
           sed -i "s#GH_TOKEN#${{ secrets.GH_TOKEN }}#g" ./wordpress-backup.sh
           sed -i "s#GH_USERNAME#${{ secrets.GH_USERNAME }}#g" ./wordpress-backup.sh
-          sed -i "s#S_REPO_URL#${{ secrets.S_REPO_URL }}#g" ./wordpress-backup.sh
+          sed -i 's|S_REPO_URL|'"${{ secrets.S_REPO_URL }}"'|g' ./wordpress-install.sh
           sed -i "s#S_DB_ENDPOINT#${{ secrets.S_DB_ENDPOINT }}#g" ./wordpress-backup.sh
           sed -i "s#S_DB_USER#${{ secrets.S_DB_USER }}#g" ./wordpress-backup.sh
           sed -i "s#S_DB_PASSWORD#${{ secrets.S_DB_PASSWORD }}#g" ./wordpress-backup.sh
@@ -94,7 +94,7 @@ jobs:
           echo "Secrets to wordpress-restore.sh"
           sed -i "s#GH_TOKEN#${{ secrets.GH_TOKEN }}#g" ./wordpress-restore.sh
           sed -i "s#GH_USERNAME#${{ secrets.GH_USERNAME }}#g" ./wordpress-restore.sh
-          sed -i "s#S_REPO_URL#${{ secrets.S_REPO_URL }}#g" ./wordpress-restore.sh
+          sed -i 's|S_REPO_URL|'"${{ secrets.S_REPO_URL }}"'|g' ./wordpress-install.sh
           sed -i "s#S_DB_ENDPOINT#${{ secrets.S_DB_ENDPOINT }}#g" ./wordpress-restore.sh
           sed -i "s#S_DB_USER#${{ secrets.S_DB_USER }}#g" ./wordpress-restore.sh
           sed -i "s#S_DB_PASSWORD#${{ secrets.S_DB_PASSWORD }}#g" ./wordpress-restore.sh
