@@ -32,7 +32,7 @@ echo "WordPress files restored successfully."  # Confirmation message if copy su
 
 # Step 3: Restore the database from the dump file into the RDS instance
 echo "Restoring database..."
-if ! sudo mysql -h "$rds_endpoint" -u "$db_username" -p"$db_password" "$db_username" < "$working_dir/wordpress-db-dump.sql"; then
+if ! sudo cat "$working_dir/wordpress-db-dump.sql" | sudo mysql -h "$rds_endpoint" -u "$db_username" -p"$db_password" "$db_username"; then
   # If restoring the database fails, the script will terminate and show an error message
   echo "Error: Database restoration failed." >&2
   exit 1
