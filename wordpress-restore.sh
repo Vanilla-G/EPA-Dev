@@ -4,7 +4,7 @@
 gittoken=GH_TOKEN                # GitHub Personal Access Token (securely stored)
 gitusername=GH_USERNAME          # GitHub Username (securely stored)
 working_dir="/tmp/epa-dev-restore"   # Temporary directory to clone the repository into
-repo_url=S_REPO_URL               # GitHub repository URL for restoring the files (should be defined before running the script)
+repo_url=https://$gitusername:$gittoken@github.com/Vanilla-G/EPA-Dev-Wordpress.git # GitHub repository URL for restoring the files (should be defined before running the script)
 
 # Define RDS and database credentials for database import
 rds_endpoint=S_DB_ENDPOINT       # The endpoint for your AWS RDS instance
