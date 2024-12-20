@@ -83,7 +83,7 @@ jobs:
 
 
           echo "Secrets to wordpress-backup.sh"
-          sed -i 's/S_REPO_URL/${{ secrets.S_REPO_URL }}/g' ./wordpress-backup.sh
+          sed -i "s#S_REPO_URL#${{ secrets.S_REPO_URL }}#g" ./wordpress-backup.sh
 
           cat ./wordpress-backup.sh
 
