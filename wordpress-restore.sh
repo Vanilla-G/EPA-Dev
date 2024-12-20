@@ -9,7 +9,7 @@ repo_url=S_REPO_URL               # GitHub repository URL for restoring the file
 # Define RDS and database credentials for database import
 rds_endpoint=S_DB_ENDPOINT       # The endpoint for your AWS RDS instance
 db_username=S_DB_USER            # The database username to connect to the RDS instance
-dbpassword=S_DB_PASSWORD         # The password for the database user
+db_password=S_DB_PASSWORD         # The password for the database user
 
 # Step 1: Clone the specified repository to a temporary directory
 echo "Cloning the repository..."
