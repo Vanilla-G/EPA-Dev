@@ -13,12 +13,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Check Required Cloudflare Secrets
-        run: |
-         if [[ -z "$S_DOMAIN" || -z "$S_PUBLIC_IP" || -z "$S_CF_API" || -z "$S_CF_ZONE_ID" ]]; then
-          echo -e "\e[31mOne or more required Cloudflare secrets are missing\e[0m" >&2
-         fi
-
       - name: Set Cloudflare Environment Variables
         env:
           S_DOMAIN: ${{ secrets.S_DOMAIN }}
@@ -152,6 +146,14 @@ jobs:
           echo "Running certbot-ssl-install.sh on VM..."
           ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA-Dev-AWS/certbot-ssl-install.sh || { echo "Script failed"; exit 1; }'
           echo "Script executed successfully."
+
+      - name: Run wordpress-restore.sh on the VM
+        run: |
+          echo "Running wordpress-restore.sh on VM..."
+          ssh -i private_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.S_PUBLIC_IP }} 'sudo bash /home/ubuntu/EPA-Dev-AWS/wordpress-restore.sh || { echo "Script failed"; exit 1; }'
+          echo "Script executed successfully."
+
+          
 
           
 
