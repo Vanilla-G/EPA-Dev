@@ -34,15 +34,13 @@ fi
 echo "Repository cloned successfully."  # Confirmation message if cloning succeeds
 
 # Step 3: Copy the WordPress content and database dump into the cloned repository
-echo "Adding database dump and web content to the repository..."
-if ! sudo cp wordpress-db-dump.sql "$working_dir/"; then
-  # If copying the SQL dump fails, the script will terminate and show an error message
-  echo "Error: Failed to copy database dump." >&2
+echo "Backing up WordPress files..."
+if ! sudo rsync -avz --exclude 'wp-config.php' /var/www/html/ "$working_dir/wp-content/"; then
+  echo "Error: Failed to copy WordPress files." >&2
   exit 1
 fi
-if ! sudo cp -r /var/www/html/* "$working_dir/"; then
-  # If copying the WordPress files fails, the script will terminate and show an error message
-  echo "Error: Failed to copy WordPress files." >&2
+if ! sudo cp wordpress-db-dump.sql "$working_dir/"; then
+  echo "Error: Failed to copy database dump." >&2
   exit 1
 fi
 
